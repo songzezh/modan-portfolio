@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title: string;
@@ -19,6 +21,50 @@ const { title, description } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <slot />
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="site-shell">
+      <Header />
+      <main id="main-content" tabindex="-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>
+
+<style>
+  .site-shell {
+    display: flex;
+    flex-direction: column;
+    inline-size: min(100%, var(--content-width-wide));
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+  }
+
+  main {
+    flex: 1;
+    min-inline-size: 0;
+    padding-block: var(--section-spacing);
+  }
+
+  .skip-link {
+    position: absolute;
+    inset-block-start: var(--space-3);
+    inset-inline-start: var(--page-gutter);
+    z-index: 1;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .skip-link:not(:focus) {
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

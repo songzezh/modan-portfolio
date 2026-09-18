@@ -1,0 +1,73 @@
+---
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const links = [
+  { href: '/', label: 'MODAN' },
+  { href: '/work', label: 'WORK' },
+  { href: '/journal', label: 'JOURNAL' },
+  { href: '/about', label: 'ABOUT' },
+];
+---
+
+<header class="site-header">
+  <nav aria-label="Main navigation">
+    <ul>
+      {links.map(({ href, label }) => (
+        <li>
+          <a href={href} aria-current={pathname === href ? 'page' : undefined}>
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    padding-block: var(--space-5);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li:first-child {
+    flex-basis: 100%;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    font-size: var(--font-size-small);
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  li:first-child a {
+    color: var(--color-text);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Matches --breakpoint-small; CSS variables cannot drive media queries. */
+  @media (min-width: 40rem) {
+    .site-header {
+      padding-block: var(--space-7);
+    }
+
+    ul {
+      column-gap: var(--space-7);
+    }
+
+    li:first-child {
+      flex-basis: auto;
+      margin-inline-end: auto;
+    }
+  }
+</style>

@@ -167,3 +167,18 @@ textarea {
   background-color: var(--color-primary-soft);
   color: var(--color-text);
 }
+
+/* Shared introduction rhythm for the site's editorial pages. */
+.page-intro {
+  max-inline-size: var(--content-width-text);
+}
+
+.page-intro h1 {
+  margin-block-end: var(--space-5);
+}
+
+.page-intro p {
+  margin-block-end: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lead);
+}
