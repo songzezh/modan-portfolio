@@ -1,0 +1,24 @@
+{
+  "slug": "a-pause-in-the-landscape",
+  "title": "A pause in the landscape",
+  "subtitle": "Study 01 / Placeholder photograph",
+  "location": null,
+  "year": null,
+  "description": "A placeholder mountain study for the MODAN homepage. Replace with original project content before publication.",
+  "coverImage": "mountains",
+  "placeholder": true,
+  "homepage": "lead",
+  "images": [{
+    "id": "mountains",
+    "src": "/assets/placeholders/landscape-1800.webp",
+    "width": 1800,
+    "height": 1200,
+    "orientation": "landscape",
+    "alt": "Snow-covered mountain peaks beneath blue sky and drifting clouds.",
+    "sources": [
+      { "src": "/assets/placeholders/landscape-600.webp", "width": 600 },
+      { "src": "/assets/placeholders/landscape-1200.webp", "width": 1200 },
+      { "src": "/assets/placeholders/landscape-1800.webp", "width": 1800 }
+    ]
+  }]
+}

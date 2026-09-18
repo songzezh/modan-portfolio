@@ -1,0 +1,25 @@
+{
+  "slug": "stillness",
+  "title": "Stillness",
+  "subtitle": "Placeholder study",
+  "location": null,
+  "year": null,
+  "description": "A placeholder study of trees and water. Replace with original project content before publication.",
+  "coverImage": "trees-and-water",
+  "placeholder": true,
+  "homepage": "selected",
+  "order": 1,
+  "images": [{
+    "id": "trees-and-water",
+    "src": "/assets/placeholders/woodland-1000.webp",
+    "width": 1000,
+    "height": 1250,
+    "orientation": "portrait",
+    "alt": "Evergreen trees above blue water, with low mountains on the horizon.",
+    "sources": [
+      { "src": "/assets/placeholders/woodland-400.webp", "width": 400 },
+      { "src": "/assets/placeholders/woodland-720.webp", "width": 720 },
+      { "src": "/assets/placeholders/woodland-1000.webp", "width": 1000 }
+    ]
+  }]
+}
