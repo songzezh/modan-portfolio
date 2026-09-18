@@ -1,10 +1,229 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Fixed placeholder photographs. Replace these sources and descriptions with
+// MODAN originals before publication; no project names or dates are invented.
+const photographs: Record<number, string> = { 29: 'landscape', 10: 'woodland', 16: 'coast' };
+const photo = (id: number, width: number, _height: number) =>
+  `/assets/placeholders/${photographs[id]}-${width}.webp`;
 ---
 
 <BaseLayout title="MODAN / 漠澹" description="A photography portfolio and visual journal.">
-  <header class="page-intro">
-    <h1>MODAN / <span lang="zh-Hans">漠澹</span></h1>
-    <p>Photography portfolio and visual journal.</p>
+  <header class="identity">
+    <div>
+      <p class="eyebrow">Photography &amp; visual journal</p>
+      <h1>MODAN <span class="identity-divider" aria-hidden="true">/</span> <span lang="zh-Hans">漠澹</span></h1>
+    </div>
+    <p class="identity-note">A place for looking.<br />For what stays, quietly.</p>
   </header>
+
+  <figure class="opening-photograph">
+    <img
+      src={photo(29, 1800, 1200)}
+      srcset={`${photo(29, 600, 400)} 600w, ${photo(29, 1200, 800)} 1200w, ${photo(29, 1800, 1200)} 1800w`}
+      sizes="(min-width: 1600px) 1320px, (min-width: 640px) 84vw, 92vw"
+      width="1800" height="1200"
+      alt="A mountain landscape beneath an open sky."
+      fetchpriority="high"
+    />
+    <figcaption><span>A pause in the landscape</span><span>Study 01 / Placeholder photograph</span></figcaption>
+  </figure>
+
+  <section class="selected-works" aria-labelledby="selected-heading">
+    <header class="section-heading">
+      <h2 id="selected-heading">Selected works</h2>
+      <a href="/work">All work <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <div class="photograph-pair">
+      <figure class="work-photograph work-photograph--portrait">
+        <img
+          src={photo(10, 1000, 1250)}
+          srcset={`${photo(10, 400, 500)} 400w, ${photo(10, 720, 900)} 720w, ${photo(10, 1000, 1250)} 1000w`}
+          sizes="(min-width: 1600px) 600px, (min-width: 640px) 42vw, 80vw"
+          width="1000" height="1250"
+          alt="A quiet landscape of trees and water."
+          loading="lazy" decoding="async"
+        />
+        <figcaption><span>01 — Stillness</span><span>Placeholder study</span></figcaption>
+      </figure>
+
+      <figure class="work-photograph work-photograph--landscape">
+        <img
+          src={photo(16, 1200, 800)}
+          srcset={`${photo(16, 450, 300)} 450w, ${photo(16, 900, 600)} 900w, ${photo(16, 1200, 800)} 1200w`}
+          sizes="(min-width: 1600px) 600px, (min-width: 640px) 42vw, 80vw"
+          width="1200" height="800"
+          alt="A view across a rocky shoreline toward the sea."
+          loading="lazy" decoding="async"
+        />
+        <figcaption><span>02 — At the edge</span><span>Placeholder study</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="journal-note" aria-labelledby="journal-heading">
+    <h2 class="eyebrow" id="journal-heading">From the visual journal</h2>
+    <div class="journal-copy">
+      <p>Not everything needs a story.<br />Sometimes, it is enough to notice.</p>
+      <p class="journal-description">Fragments of light, places passed through, and the small things that ask us to look again.</p>
+      <a href="/journal">Read the journal <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .identity {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-end: var(--space-8);
+  }
+
+  .eyebrow {
+    margin-block: 0 var(--space-5);
+    color: var(--color-text-muted);
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-caption);
+    letter-spacing: var(--letter-spacing-label);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+  }
+
+  .identity-divider {
+    margin-inline: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-heading);
+    vertical-align: middle;
+  }
+
+  .identity-note {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  img {
+    inline-size: 100%;
+    background-color: var(--color-surface);
+  }
+
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .selected-works {
+    margin-block-start: var(--image-series-gap);
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-block-end: var(--space-7);
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    font-size: var(--font-size-heading-small);
+  }
+
+  .section-heading a,
+  .journal-copy a {
+    display: inline-block;
+    padding-block: var(--space-3);
+    font-size: var(--font-size-small);
+  }
+
+  a span {
+    margin-inline-start: var(--space-2);
+  }
+
+  .photograph-pair {
+    display: grid;
+    gap: var(--image-series-gap);
+  }
+
+  .work-photograph--portrait {
+    inline-size: 86%;
+  }
+
+  .work-photograph--landscape {
+    inline-size: 86%;
+    justify-self: end;
+  }
+
+  .journal-note {
+    display: grid;
+    gap: var(--space-6);
+    margin-block-start: var(--section-spacing);
+    padding-block-start: var(--space-7);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .journal-copy {
+    max-inline-size: var(--content-width-text);
+  }
+
+  .journal-copy > p:first-child {
+    font-family: var(--font-family-editorial);
+    font-size: var(--font-size-heading);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-heading);
+    margin-block-end: var(--space-6);
+  }
+
+  .journal-description {
+    max-inline-size: 34ch;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+  }
+
+  /* Matches --breakpoint-small. */
+  @media (min-width: 40rem) {
+    .identity {
+      grid-template-columns: 2fr 1fr;
+      align-items: end;
+      margin-block-end: var(--space-9);
+    }
+
+    .identity-note {
+      justify-self: end;
+    }
+
+    .opening-photograph {
+      inline-size: 92%;
+      margin-inline-start: auto;
+    }
+
+    .photograph-pair {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      column-gap: var(--image-series-gap);
+    }
+
+    .work-photograph--portrait,
+    .work-photograph--landscape {
+      inline-size: 100%;
+    }
+
+    .work-photograph--landscape {
+      margin-block-start: var(--section-spacing);
+    }
+
+    .journal-note {
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-7);
+      padding-block: var(--space-8) var(--space-7);
+    }
+  }
+</style>
