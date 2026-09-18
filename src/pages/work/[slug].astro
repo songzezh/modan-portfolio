@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lightbox from '../../components/Lightbox.astro';
 import { getProjects, getImageSrcSet } from '../../lib/projects';
 
 export const getStaticPaths = (async () => {
@@ -37,6 +38,7 @@ const { title, subtitle, description, location, year, images, placeholder } = pr
     <div class="photobook">
       {images.map((image, index) => (
         <figure class:list={['photobook-image', `photobook-image--${image.orientation}`]}>
+          <a class="photograph-link" href={image.src} data-lightbox="project-lightbox" data-caption={image.caption} aria-label={`View photograph ${index + 1}: ${image.alt}`}>
           <img src={image.src} srcset={getImageSrcSet(image)}
             sizes={image.orientation === 'portrait'
               ? '(min-width: 1600px) 690px, (min-width: 640px) 44vw, 92vw'
@@ -46,6 +48,7 @@ const { title, subtitle, description, location, year, images, placeholder } = pr
             width={image.width} height={image.height} alt={image.alt}
             loading={index === 0 ? 'eager' : 'lazy'}
             fetchpriority={index === 0 ? 'high' : 'auto'} decoding="async" />
+          </a>
           {image.caption && <figcaption>{image.caption}</figcaption>}
         </figure>
       ))}
@@ -63,6 +66,7 @@ const { title, subtitle, description, location, year, images, placeholder } = pr
       <span>{next.data.title}</span>
     </a>}
   </nav>
+  <Lightbox id="project-lightbox" label={`${title} — photographs`} />
 </BaseLayout>
 
 <style>
@@ -81,6 +85,7 @@ const { title, subtitle, description, location, year, images, placeholder } = pr
   .photobook { display: grid; gap: var(--image-series-gap); }
   .photobook-image { min-inline-size: 0; inline-size: 100%; }
   .photobook-image img { inline-size: 100%; }
+  .photograph-link { display: block; cursor: zoom-in; }
   figcaption { max-inline-size: var(--content-width-text); }
   .project-navigation {
     display: grid;

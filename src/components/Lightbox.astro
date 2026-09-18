@@ -1,0 +1,80 @@
+---
+interface Props { id: string; label?: string }
+const { id, label = 'Photograph viewer' } = Astro.props;
+---
+
+<dialog id={id} class="lightbox" data-lightbox-dialog aria-label={label} aria-describedby={`${id}-instructions`}>
+  <p id={`${id}-instructions`} class="sr-only">Use the left and right arrow keys to change photographs. Press Escape to close.</p>
+  <div class="lightbox-toolbar">
+    <p data-lightbox-counter aria-live="polite" aria-atomic="true"></p>
+    <button type="button" data-lightbox-close autofocus>Close <span aria-hidden="true">×</span></button>
+  </div>
+  <div class="lightbox-stage" data-lightbox-stage>
+    <img data-lightbox-image alt="" />
+    <p data-lightbox-error role="status" hidden>Unable to load this photograph. Try another image or close the viewer.</p>
+  </div>
+  <div class="lightbox-bottom">
+    <p data-lightbox-caption></p>
+    <div class="lightbox-controls">
+      <button type="button" data-lightbox-previous aria-label="Previous photograph">← <span>Previous</span></button>
+      <button type="button" data-lightbox-next aria-label="Next photograph"><span>Next</span> →</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { initializeLightbox } from '../scripts/lightbox';
+  document.querySelectorAll<HTMLDialogElement>('[data-lightbox-dialog]').forEach(initializeLightbox);
+</script>
+
+<style>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    inline-size: 100%;
+    max-inline-size: none;
+    block-size: 100dvh;
+    max-block-size: none;
+    padding: var(--space-4);
+    padding-block-start: max(var(--space-4), env(safe-area-inset-top));
+    padding-block-end: max(var(--space-4), env(safe-area-inset-bottom));
+    border: 0;
+    background: transparent;
+    color: var(--color-lightbox-text);
+    overscroll-behavior: contain;
+  }
+  .lightbox::backdrop { background: var(--color-lightbox-overlay); }
+  .lightbox[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: var(--space-4); }
+  .lightbox-toolbar, .lightbox-bottom, .lightbox-controls { display: flex; align-items: center; gap: var(--space-4); }
+  .lightbox-toolbar { justify-content: space-between; }
+  .lightbox-bottom { justify-content: space-between; align-items: start; }
+  .lightbox p { margin: 0; font-size: var(--font-size-small); }
+  [data-lightbox-counter], [data-lightbox-caption] { color: var(--color-lightbox-text-muted); }
+  [data-lightbox-caption] { max-inline-size: var(--content-width-text); max-block-size: 20dvh; overflow-y: auto; overflow-wrap: anywhere; }
+  .lightbox-stage { display: grid; place-items: center; min-block-size: 0; min-inline-size: 0; touch-action: pan-y pinch-zoom; }
+  .lightbox-stage img { inline-size: 100%; block-size: 100%; min-block-size: 0; object-fit: contain; user-select: none; }
+  /* Image element fills its stage; clicks in its letterboxing are handled in TS. */
+  .lightbox button {
+    flex-shrink: 0;
+    min-block-size: 2.75rem;
+    min-inline-size: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-lightbox-text);
+    font-size: var(--font-size-small);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .lightbox button:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  .lightbox :focus-visible { outline: 2px solid var(--color-lightbox-text); outline-offset: 2px; }
+  .lightbox [hidden] { display: none; }
+  .sr-only { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  @media (max-width: 39.999rem) {
+    .lightbox-bottom { flex-direction: column; gap: var(--space-2); }
+    .lightbox-controls { align-self: center; }
+  }
+  /* No image animation or animated closing: reduced motion is respected by default. */
+</style>
