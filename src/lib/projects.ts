@@ -3,6 +3,12 @@ import type { ProjectImage } from './project-schema';
 
 export type ProjectEntry = CollectionEntry<'projects'>;
 
+/** One editorial sequence shared by the index and previous/next navigation. */
+export async function getProjects(): Promise<ProjectEntry[]> {
+  return (await getCollection('projects'))
+    .sort((a, b) => a.data.order - b.data.order || a.id.localeCompare(b.id));
+}
+
 export function getCoverImage(project: ProjectEntry): ProjectImage {
   const image = project.data.images.find(({ id }) => id === project.data.coverImage);
   if (!image) throw new Error(`Missing cover image for ${project.id}.`);
@@ -17,7 +23,7 @@ export function getImageSrcSet(image: ProjectImage): string | undefined {
 }
 
 export async function getHomepageProjects() {
-  const projects = await getCollection('projects');
+  const projects = await getProjects();
   const leads = projects.filter(({ data }) => data.homepage === 'lead');
   if (leads.length > 1) throw new Error('Only one project may be the homepage lead.');
   const selected = projects.filter(({ data }) => data.homepage === 'selected')

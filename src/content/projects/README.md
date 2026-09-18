@@ -19,7 +19,7 @@ project titles, paths, captions, or dimensions to page templates.
 | `images` | Nonempty, ordered image list; order is the reading sequence |
 | `placeholder` | Optional boolean; defaults to false; marks demonstration content |
 | `homepage` | Optional `lead`, `selected`, or `none` (default) |
-| `order` | Optional nonnegative integer; sorts selected projects, then slug |
+| `order` | Optional nonnegative integer; sorts the portfolio and selected projects, then slug |
 
 Only one project may have `homepage: "lead"`. Missing lead or selected projects
 simply omit that homepage section. Placeholder entries remain visible while the
@@ -51,6 +51,12 @@ and `getHomepageProjects`. `Project` and `ProjectImage` types are inferred from
 the schemas in `src/lib/project-schema.ts`; `ProjectEntry` is the Astro entry type.
 
 Pages control markup, responsive `sizes`, layout, and image loading priority.
-Collection entries control content. No project detail routes are created yet.
+Collection entries control content. `/work` lists every series in editorial order;
+`/work/[slug]` renders the image list in its stored order. Previous/next navigation
+uses the same portfolio order, without wrapping at either end. Unknown locations
+and years are omitted. Portraits are narrow, squares medium, and landscapes wide;
+desktop alignment alternates, with every third landscape full width. Mobile
+images use the available width. Add images and optional captions in JSON to
+extend a photobook without editing its page template.
 
 Implementation follows [Astro content collections](https://docs.astro.build/en/guides/content-collections/).

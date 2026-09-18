@@ -51,7 +51,7 @@ const leadImage = lead && getCoverImage(lead);
               loading="lazy" decoding="async"
             />
             <figcaption>
-              <span>{String(index + 1).padStart(2, '0')} — {project.data.title}</span>
+              <span>{String(index + 1).padStart(2, '0')} — <a href={`/work/${project.data.slug}`}>{project.data.title}</a></span>
               <span>{project.data.subtitle}</span>
               {image.caption && <span>{image.caption}</span>}
             </figcaption>

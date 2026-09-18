@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProjects, getCoverImage, getImageSrcSet } from '../lib/projects';
+
+const projects = await getProjects();
 ---
 
 <BaseLayout title="Work — MODAN / 漠澹" description="Photographic work by MODAN / 漠澹.">
@@ -7,4 +10,65 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <h1>Work</h1>
     <p>Photographs and series.</p>
   </header>
+
+  <ol class="series-list" aria-label="Photography series">
+    {projects.map((project, index) => {
+      const image = getCoverImage(project);
+      const href = `/work/${project.data.slug}`;
+      return (
+        <li class="series">
+          <div class="series-heading">
+            <p class="series-number">{String(index + 1).padStart(2, '0')}</p>
+            <h2 id={`series-${project.id}`}><a href={href}>{project.data.title}</a></h2>
+            <p class="series-subtitle">{project.data.subtitle}</p>
+            {(project.data.location || project.data.year) && <p class="series-meta">
+              {project.data.location}
+              {project.data.location && project.data.year && ' / '}
+              {project.data.year && <time datetime={String(project.data.year)}>{project.data.year}</time>}
+            </p>}
+          </div>
+          <a class:list={['series-image', `series-image--${image.orientation}`]} href={href} aria-labelledby={`series-${project.id}`}>
+            <img src={image.src} srcset={getImageSrcSet(image)}
+              sizes="(min-width: 1600px) 840px, (min-width: 640px) 55vw, 92vw"
+              width={image.width} height={image.height} alt={image.alt}
+              loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
+          </a>
+        </li>
+      );
+    })}
+  </ol>
+  {projects.length === 0 && <p class="empty-state">New photography series will appear here.</p>}
 </BaseLayout>
+
+<style>
+  .series-list {
+    margin: var(--section-spacing) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .series + .series { margin-block-start: var(--image-series-gap); }
+  .series { display: grid; gap: var(--space-6); }
+  .series-heading { max-inline-size: var(--content-width-text); }
+  .series-number, .series-subtitle, .series-meta {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    margin-block-end: var(--space-3);
+  }
+  .series-number { margin-block-end: var(--space-5); }
+  h2 { font-size: var(--font-size-heading); }
+  h2 a { text-decoration-line: none; }
+  h2 a:hover, h2 a:focus-visible { text-decoration-line: underline; }
+  .series-image { display: block; align-self: start; }
+  .series-image img { inline-size: 100%; }
+  .series-image--portrait { inline-size: 80%; margin-inline-start: auto; }
+  .empty-state { margin-block-start: var(--space-8); }
+  @media (min-width: 40rem) {
+    .series { grid-template-columns: 1fr 2fr; gap: var(--image-gap); }
+    .series-heading { padding-block-start: var(--space-6); }
+    .series:nth-child(even) { grid-template-columns: 2fr 1fr; }
+    .series:nth-child(even) .series-heading { grid-column: 2; grid-row: 1; }
+    .series:nth-child(even) .series-image { grid-column: 1; grid-row: 1; }
+    .series-image--portrait { inline-size: 72%; margin-inline: 0 auto; }
+    .series-image--square { inline-size: 86%; }
+  }
+</style>
