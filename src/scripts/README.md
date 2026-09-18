@@ -20,3 +20,20 @@ tapping the photograph does not close it. Vertical gestures and pinch zoom
 are retained. Controls remain visible and no animated transitions are used,
 including when reduced motion is requested. Failed images expose a status
 message while navigation and closing remain available.
+
+## Gallery filtering
+
+`gallery-filter.ts` exports `initializeGalleryFilter(gallery)`. `/work` supplies
+static series with space-separated `data-categories` values. The module reveals
+hidden filter controls only after it can initialize successfully. Without
+JavaScript, all content and project links remain usable.
+
+Native buttons support Tab, Enter, and Space, expose `aria-pressed`, and keep
+focus in the controls while results change. A polite status announces the
+category and count. Nonmatching entries use `hidden`, removing their links from
+keyboard navigation. Empty results offer a message; All restores every entry.
+Visible rows retain alternating alignment and original series numbers.
+
+Filtering uses a short token-based opacity change, cancels in-progress effects
+on rapid selections, and skips animation under reduced motion. No library,
+network request, or page reload is required.

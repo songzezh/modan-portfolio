@@ -1,4 +1,5 @@
 import { z } from 'astro/zod';
+import { projectCategories } from './project-categories';
 
 const text = z.string().trim().min(1);
 const slug = text.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Use a lowercase, hyphen-separated slug.');
@@ -36,6 +37,7 @@ export const projectSchema = z.object({
   location: text.nullable(),
   year: z.number().int().min(1800).max(9999).nullable(),
   description: text,
+  categories: z.array(z.enum(projectCategories)).default([]),
   coverImage: slug,
   images: z.array(projectImageSchema).min(1),
   placeholder: z.boolean().default(false),

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getProjects, getCoverImage, getImageSrcSet } from '../lib/projects';
+import { projectCategories, projectCategoryLabels } from '../lib/project-categories';
 
 const projects = await getProjects();
 ---
@@ -11,12 +12,22 @@ const projects = await getProjects();
     <p>Photographs and series.</p>
   </header>
 
-  <ol class="series-list" aria-label="Photography series">
+  <div class="gallery" data-filter-gallery>
+    <div class="filter-controls" data-filter-controls hidden>
+      <div class="filter-buttons" role="group" aria-label="Filter photography series">
+        <button type="button" class="filter" data-filter="all" aria-pressed="true" aria-controls="work-series">All</button>
+        {projectCategories.map((category) => (
+          <button type="button" class="filter" data-filter={category} aria-pressed="false" aria-controls="work-series">{projectCategoryLabels[category]}</button>
+        ))}
+      </div>
+      <p class="filter-status" data-filter-status role="status" aria-live="polite" aria-atomic="true">All: {projects.length} series shown.</p>
+    </div>
+  <ol id="work-series" class="series-list" data-filter-list aria-label="Photography series">
     {projects.map((project, index) => {
       const image = getCoverImage(project);
       const href = `/work/${project.data.slug}`;
       return (
-        <li class="series">
+        <li class:list={['series', { 'series--alternate': index % 2 === 1 }]} data-categories={project.data.categories.join(' ')}>
           <div class="series-heading">
             <p class="series-number">{String(index + 1).padStart(2, '0')}</p>
             <h2 id={`series-${project.id}`}><a href={href}>{project.data.title}</a></h2>
@@ -37,8 +48,14 @@ const projects = await getProjects();
       );
     })}
   </ol>
-  {projects.length === 0 && <p class="empty-state">New photography series will appear here.</p>}
+  <p class="empty-state" data-filter-empty hidden={projects.length > 0}>New photography series will appear here.</p>
+  </div>
 </BaseLayout>
+
+<script>
+  import { initializeGalleryFilter } from '../scripts/gallery-filter';
+  document.querySelectorAll<HTMLElement>('[data-filter-gallery]').forEach(initializeGalleryFilter);
+</script>
 
 <style>
   .series-list {
@@ -46,8 +63,22 @@ const projects = await getProjects();
     padding: 0;
     list-style: none;
   }
-  .series + .series { margin-block-start: var(--image-series-gap); }
+  .series:not([hidden]) ~ .series:not([hidden]) { margin-block-start: var(--image-series-gap); }
   .series { display: grid; gap: var(--space-6); }
+  .gallery [hidden] { display: none; }
+  .filter-controls {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: var(--space-4) var(--space-6); margin-block-start: var(--space-7);
+  }
+  .filter-buttons { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
+  .filter {
+    padding: var(--space-2) var(--space-1); min-block-size: 2.75rem; min-inline-size: 2.75rem;
+    border: 0; border-radius: 0; background: transparent;
+    color: var(--color-text-muted); font-size: var(--font-size-small); cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  .filter:hover { color: var(--color-primary); text-decoration: underline; text-underline-offset: 0.2em; }
+  .filter-status { margin: 0; color: var(--color-text-muted); font-size: var(--font-size-caption); }
   .series-heading { max-inline-size: var(--content-width-text); }
   .series-number, .series-subtitle, .series-meta {
     color: var(--color-text-muted);
@@ -65,9 +96,9 @@ const projects = await getProjects();
   @media (min-width: 40rem) {
     .series { grid-template-columns: 1fr 2fr; gap: var(--image-gap); }
     .series-heading { padding-block-start: var(--space-6); }
-    .series:nth-child(even) { grid-template-columns: 2fr 1fr; }
-    .series:nth-child(even) .series-heading { grid-column: 2; grid-row: 1; }
-    .series:nth-child(even) .series-image { grid-column: 1; grid-row: 1; }
+    .series--alternate { grid-template-columns: 2fr 1fr; }
+    .series--alternate .series-heading { grid-column: 2; grid-row: 1; }
+    .series--alternate .series-image { grid-column: 1; grid-row: 1; }
     .series-image--portrait { inline-size: 72%; margin-inline: 0 auto; }
     .series-image--square { inline-size: 86%; }
   }

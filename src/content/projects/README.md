@@ -15,6 +15,7 @@ project titles, paths, captions, or dimensions to page templates.
 | `location` | Location string, or `null` when unknown |
 | `year` | Integer from 1800–9999, or `null` when unknown |
 | `description` | Nonempty plain-text project description |
+| `categories` | Optional array of `street`, `portrait`, and/or `travel`; defaults to `[]` |
 | `coverImage` | ID of an image in this project's `images` array |
 | `images` | Nonempty, ordered image list; order is the reading sequence |
 | `placeholder` | Optional boolean; defaults to false; marks demonstration content |
@@ -24,6 +25,12 @@ project titles, paths, captions, or dimensions to page templates.
 Only one project may have `homepage: "lead"`. Missing lead or selected projects
 simply omit that homepage section. Placeholder entries remain visible while the
 site is being developed; replace their metadata and images before publication.
+
+The `/work` filters read `categories` from each entry. A project can belong to
+multiple categories, for example `["street", "travel"]`. An empty or omitted
+array makes it visible only under All. Categories describe subject matter, not
+image orientation. Current landscape placeholders are categorized as Travel.
+All entries render into HTML; filtering is optional client-side enhancement.
 
 ## Image fields
 
