@@ -1,0 +1,113 @@
+/* MODAN / 漠澹 — white paper, forest-green ink, space for photography. */
+:root {
+  /* Local font stacks; no external font requests or required downloads. */
+  --font-family-body: 'Helvetica Neue', Helvetica, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-family-editorial: 'Iowan Old Style', 'Palatino Linotype',
+    'Book Antiqua', Palatino, 'Songti SC', 'Noto Serif CJK SC', serif;
+  --font-size-caption: 0.8125rem;
+  --font-size-small: 0.875rem;
+  --font-size-body: 1rem;
+  --font-size-lead: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  --font-size-heading-small: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --font-size-heading: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  --font-size-title: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-strong: 600;
+  --line-height-heading: 1.25;
+  --line-height-body: 1.7;
+  --line-height-caption: 1.5;
+  --letter-spacing-heading: -0.02em;
+  --letter-spacing-body: 0;
+  --letter-spacing-label: 0.08em;
+
+  /* Spacing scale, with fluid values reserved for larger layout rhythms. */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --space-11: 12rem;
+  --page-gutter: clamp(1.25rem, 4vw, 5rem);
+  --section-spacing: clamp(4rem, 10vw, 10rem);
+  --text-spacing: var(--space-5);
+
+  /* Widths are opt-in: global styles do not impose a page composition. */
+  --content-width-text: 38rem;
+  --content-width-narrow: 48rem;
+  --content-width-default: 75rem;
+  --content-width-wide: 100rem;
+
+  /* Photograph-to-photograph rhythm and subordinate caption spacing. */
+  --image-gap: clamp(1.5rem, 4vw, 4rem);
+  --image-series-gap: clamp(4rem, 10vw, 10rem);
+  --image-caption-gap: var(--space-3);
+
+  /* Reference values only: var() cannot be used in media query conditions.
+     Use matching literals in future queries: 40rem / 64rem / 90rem. */
+  --breakpoint-small: 40rem;
+  --breakpoint-medium: 64rem;
+  --breakpoint-large: 90rem;
+
+  /* Motion is opt-in; avoid animation on photographs by default. */
+  --duration-instant: 0ms;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Light is the default. Set data-theme="dark" on <html> to opt into dark.
+   Surface: subtle secondary sections, never repeated cards.
+   Muted text: metadata, captions, dates, and secondary navigation.
+   Border: subtle separators only. Green is ink, never a large decorative panel.
+   On light surface/primary-soft backgrounds, use text or primary for small
+   text: the supplied muted color only meets AA on the white canvas.
+   Never derive UI colors from photographs. */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-bg: #FFFFFF;
+  --color-surface: #F5F6F3;
+  --color-text: #10241C;
+  --color-text-muted: #68756F;
+  --color-primary: #173F32;
+  --color-primary-hover: #0F3026;
+  --color-primary-soft: #E8EEEA;
+  --color-border: #DCE2DE;
+  --color-overlay: rgba(5, 12, 9, 0.96);
+
+  /* Lightboxes use a constant nighttime palette in either page theme. */
+  --color-lightbox-overlay: rgba(2, 7, 5, 0.97);
+  --color-lightbox-text: #F5F7F5;
+  --color-lightbox-text-muted: #98A69F;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #08130F;
+  --color-surface: #0E1C17;
+  --color-text: #F5F7F5;
+  --color-text-muted: #98A69F;
+  --color-primary: #A8C1B4;
+  --color-primary-hover: #C2D4CB;
+  /* No separate dark soft color was specified; reuse the dark surface. */
+  --color-primary-soft: var(--color-surface);
+  --color-border: #21332B;
+  --color-overlay: rgba(2, 7, 5, 0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+}

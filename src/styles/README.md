@@ -1,0 +1,44 @@
+# MODAN visual foundation
+
+White paper, forest-green ink, photography. The light theme is the default;
+set `data-theme="dark"` on the root HTML element for the nighttime palette.
+Typography, spacing, widths, and motion values live alongside colors in
+`tokens.css`. `global.css` imports them through the shared Astro layout.
+
+## Color roles
+
+- `--color-bg`: dominant page canvas. Most content sits directly on it.
+- `--color-surface`: occasional secondary sections, not repeated cards.
+- `--color-text`: primary typography.
+- `--color-text-muted`: captions, dates, locations, image numbers, metadata,
+  and inactive navigation on the page canvas.
+- `--color-primary` and `--color-primary-hover`: small interactive details.
+- `--color-primary-soft`: sparse selected/hover backgrounds. Dark mode reuses
+  its surface token rather than inheriting the light green fill.
+- `--color-border`: decorative separators; not the sole indicator of a control.
+- `--color-overlay`: the supplied theme-specific overlay palette.
+- `--color-lightbox-overlay`: the brief's explicit lightbox background,
+  `rgba(2, 7, 5, 0.97)`, in both themes. Future lightbox backdrops should use
+  this token, with `--color-lightbox-text` and `--color-lightbox-text-muted`
+  for controls. Do not place controls on panels or reduce text opacity.
+
+Photographs retain natural proportions without filters or automatic color
+extraction. Do not introduce decorative colors, shadows, gradients, rounded
+cards, textures, or large green panels.
+
+## Accessible pairings and states
+
+The exact light muted color has 4.81:1 contrast on white, but only 4.44:1 on
+the surface and 4.09:1 on primary-soft. Use `--color-text` or
+`--color-primary` for text on those two light backgrounds; do not use muted
+captions there. Primary text and interactive text exceed 4.5:1 on all three
+light backgrounds. Dark muted text exceeds 6.9:1 on both dark backgrounds.
+
+Inline links stay underlined. Navigation uses an underline on hover, keyboard
+focus, and `aria-current`. Filter buttons can opt into `.filter` and indicate
+selection using `aria-pressed="true"`, underlining, and weight as well as color.
+Keyboard focus uses a visible outline. Motion honors reduced-motion settings.
+
+These files establish foundations only; no pages, filter controls, theme toggle,
+or lightbox behavior are implemented here. Future components must use tokens
+and verify contrast on their actual backgrounds, particularly over photography.
