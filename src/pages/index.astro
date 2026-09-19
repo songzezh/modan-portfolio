@@ -7,11 +7,11 @@ const { lead, selected } = await getHomepageProjects();
 const leadImage = lead && getCoverImage(lead);
 ---
 
-<BaseLayout title="MODAN / 漠澹" description="A photography portfolio and visual journal.">
+<BaseLayout title="MÒ DÀN / 漠澹 — Photography & Visual Journal" description="Photography and a visual journal by MÒ DÀN / 漠澹.">
   <header class="identity">
     <div>
       <p class="eyebrow">Photography &amp; visual journal</p>
-      <h1>MODAN <span class="identity-divider" aria-hidden="true">/</span> <span lang="zh-Hans">漠澹</span></h1>
+      <h1><span class="identity-roman">MÒ DÀN</span> <span class="identity-companion"><span class="identity-divider">/</span> <span class="identity-chinese" lang="zh-Hans">漠澹</span></span></h1>
     </div>
     <p class="identity-note">A place for looking.<br />For what stays, quietly.</p>
   </header>
@@ -93,10 +93,23 @@ const leadImage = lead && getCoverImage(lead);
     font-size: clamp(2rem, 5vw, 4.5rem);
   }
 
+  .identity-roman,
+  .identity-companion {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .identity-chinese {
+    font-family: var(--font-family-body);
+    font-size: 0.9em;
+    font-weight: var(--font-weight-regular);
+    letter-spacing: 0.02em;
+  }
+
   .identity-divider {
-    margin-inline: var(--space-2);
+    margin-inline: 0.12em;
     color: var(--color-text-muted);
-    font-size: var(--font-size-heading);
+    font-size: 0.55em;
     vertical-align: middle;
   }
 
