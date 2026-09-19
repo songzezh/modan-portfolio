@@ -1,0 +1,22 @@
+.compare-back { display: inline-block; margin-block-end: var(--space-6); font-size: var(--font-size-small); }
+.gear-compare { margin-block-start: var(--space-8); }
+.gear-compare [hidden] { display: none !important; }
+.gear-compare fieldset { border: 0; padding: 0; margin: 0 0 var(--space-6); min-inline-size: 0; }
+.gear-compare legend { font-family: var(--font-family-editorial); font-size: var(--font-size-heading); margin-block-end: var(--space-4); }
+.gear-compare #compare-help { max-inline-size: 65ch; color: var(--color-text-muted); }
+.compare-selectors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); margin-block-start: var(--space-7); }
+.compare-slot { min-inline-size: 0; }
+.compare-slot label { display: block; font-size: var(--font-size-caption); color: var(--color-text-muted); }
+.compare-slot select { inline-size: 100%; min-block-size: 2.75rem; padding-block: var(--space-2); border: 0; border-block-end: 1px solid var(--color-border); border-radius: 0; background: var(--color-bg); color: var(--color-primary); }
+.compare-slot button { display: block; border: 0; background: transparent; padding: var(--space-2) 0; min-block-size: 2.75rem; font-size: var(--font-size-small); text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }
+.compare-slot button:disabled { color: var(--color-text-muted); text-decoration: none; cursor: default; }
+.gear-compare [data-compare-status], .gear-compare #compare-scroll-help { color: var(--color-text-muted); font-size: var(--font-size-small); }
+.gear-compare [data-compare-output] { margin-block-start: var(--space-8); }
+.comparison-scroll { overflow-x: auto; overscroll-behavior-inline: contain; }
+.comparison-scroll table { border-collapse: collapse; inline-size: 100%; text-align: start; }
+.comparison-scroll caption { text-align: start; font-family: var(--font-family-editorial); font-size: var(--font-size-heading-small); padding-block-end: var(--space-5); }
+.comparison-scroll th, .comparison-scroll td { border-block-end: 1px solid var(--color-border); padding: var(--space-5); min-inline-size: 13rem; max-inline-size: 24rem; vertical-align: top; overflow-wrap: anywhere; font-weight: var(--font-weight-regular); }
+.comparison-scroll thead th { border-block-start: 1px solid var(--color-border); font-family: var(--font-family-editorial); font-size: var(--font-size-heading-small); }
+.comparison-scroll th:first-child { padding-inline-start: 0; min-inline-size: 10rem; }
+.comparison-scroll tbody th { color: var(--color-text-muted); font-size: var(--font-size-small); }
+@media (min-width: 64rem) { .compare-selectors { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

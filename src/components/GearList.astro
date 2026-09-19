@@ -1,0 +1,45 @@
+---
+import type { GearEntry } from '../lib/gear';
+import { categoryLabels, statusLabels, formatSpec } from '../lib/gear-display';
+import { gearFacets } from '../lib/gear-filters';
+interface Props { entries: GearEntry[] }
+const { entries } = Astro.props;
+---
+<ol class="gear-list" id="gear-list" aria-label="Gear archive">
+  {entries.map(({ data: gear }, index) => <li data-gear-item
+    data-facets={JSON.stringify(gearFacets(gear))}>
+    <article class="gear-row" aria-labelledby={`gear-${gear.slug}`}>
+      <span class="number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+      <div class="gear-note">
+        <p class="meta">{gear.brand} / {categoryLabels[gear.category]}</p>
+        <h2 id={`gear-${gear.slug}`}><a href={`/gear/${gear.slug}`}>{gear.name}</a></h2>
+        <p class="status">{statusLabels[gear.status]}</p>
+        {gear.specs.length > 0 && <dl>{gear.specs.slice(0, 2).map(spec => <div><dt>{spec.label}</dt><dd>{formatSpec(spec)}</dd></div>)}</dl>}
+      </div>
+      {gear.image && <a class="gear-image" href={`/gear/${gear.slug}`} aria-label={`View ${gear.name}`}>
+        <img src={gear.image.src} alt={gear.image.alt} loading="lazy" decoding="async" />
+      </a>}
+    </article>
+  </li>)}
+</ol>
+<style>
+  .gear-list { list-style: none; padding: 0; margin: var(--space-8) 0 0; }
+  li { border-block-start: 1px solid var(--color-border); }
+  li[hidden] { display: none; }
+  .gear-row { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: var(--space-5); padding-block: var(--space-7); }
+  .number, .meta, .status, dl { font-size: var(--font-size-small); }
+  .number, .meta, dt { color: var(--color-text-muted); }
+  .meta { margin-block-end: var(--space-3); }
+  h2 { font-size: clamp(1.75rem, 3vw, 2.75rem); }
+  h2 a { text-decoration: none; }
+  h2 a:hover, h2 a:focus-visible { text-decoration: underline; }
+  .status { margin-block-end: var(--space-5); }
+  dl { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-7); margin: 0; }
+  dd { margin: 0; }
+  .gear-image { grid-column: 2; max-inline-size: 16rem; align-self: center; }
+  img { max-block-size: 14rem; object-fit: contain; }
+  @media (min-width: 48rem) {
+    .gear-row { grid-template-columns: 4rem minmax(0, 1fr) minmax(0, 16rem); gap: var(--space-7); padding-block: var(--space-8); }
+    .gear-image { grid-column: 3; }
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+import GearLayout from '../../layouts/GearLayout.astro';
+import { getGear } from '../../lib/gear';
+import { toComparisonItem } from '../../lib/gear-comparison';
+import '../../styles/gear-compare.css';
+const items = (await getGear()).map(entry => toComparisonItem(entry.data));
+---
+<GearLayout title="Compare gear — MODAN / 漠澹" description="Inspect recorded gear specifications side by side.">
+  <header class="page-intro">
+    <a class="compare-back" href="/gear/archive">← Gear Archive</a>
+    <h1>Side by side.</h1>
+    <p>Two to four items. A closer look at their recorded specifications.</p>
+  </header>
+  <div class="gear-compare" data-gear-compare data-items={JSON.stringify(items)}>
+    <div data-compare-controls hidden>
+      <fieldset aria-describedby="compare-help">
+        <legend>Select gear</legend>
+        <p id="compare-help">Choose at least two items. Change a selection to replace it, or remove it below. The address updates so you can share this view.</p>
+        <div class="compare-selectors">
+          {Array.from({ length: 4 }, (_, index) => <div class="compare-slot">
+            <label for={`compare-item-${index}`}>Item {index + 1}{index > 1 ? ' (optional)' : ''}</label>
+            <select id={`compare-item-${index}`} data-compare-select aria-controls="comparison-region">
+              <option value="">Choose an item</option>
+              {items.map(item => <option value={item.slug}>{item.name}</option>)}
+            </select>
+            <button type="button" data-compare-remove aria-label={`Remove item ${index + 1}`} disabled>Remove</button>
+          </div>)}
+        </div>
+      </fieldset>
+    </div>
+    <p data-compare-status role="status" aria-live="polite" aria-atomic="true">
+      {items.length < 2 ? 'Comparison will be available when at least two gear entries have been recorded.' : 'Choose two to four items to inspect their specifications.'}
+    </p>
+    <div data-compare-output hidden>
+      <p id="compare-scroll-help">Scroll horizontally to view all columns. Keyboard: focus the table region and use the left and right arrow keys. “Not recorded” means the archive has no value for that field.</p>
+      <div id="comparison-region" class="comparison-scroll" role="region" aria-label="Gear comparison table" aria-describedby="compare-scroll-help" tabindex="0">
+        <table>
+          <caption>Recorded product specifications</caption>
+          <thead data-compare-head></thead>
+          <tbody data-compare-body></tbody>
+        </table>
+      </div>
+    </div>
+    <noscript><p>Interactive selection requires JavaScript. You can read all specifications on the <a href="/gear/archive">Gear Archive</a> item pages.</p></noscript>
+  </div>
+</GearLayout>
+<script>
+  import { initializeGearComparison } from '../../scripts/gear-compare';
+  document.querySelectorAll<HTMLElement>('[data-gear-compare]').forEach(initializeGearComparison);
+</script>

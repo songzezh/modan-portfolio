@@ -1,0 +1,65 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import GearLayout from '../../layouts/GearLayout.astro';
+import { getGear } from '../../lib/gear';
+import { getProjects } from '../../lib/projects';
+import { categoryLabels, statusLabels, formatSpec } from '../../lib/gear-display';
+export const getStaticPaths = (async () => (await getGear()).map(entry => ({
+  params: { slug: entry.id }, props: { gear: entry.data },
+}))) satisfies GetStaticPaths;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { gear } = Astro.props;
+const related = (await getProjects()).filter(project => gear.relatedProjectSlugs.includes(project.id));
+const dateLabel = (value: string) => new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${value}T00:00:00Z`));
+---
+<GearLayout title={`${gear.name} — Gear — MODAN / 漠澹`} description={gear.summary}>
+  <article>
+    <a class="back" href="/gear/archive">← Gear Archive</a>
+    <header class="detail-header">
+      <div><p class="metadata">{gear.brand} / {categoryLabels[gear.category]}</p><h1>{gear.name}</h1><p class="summary">{gear.summary}</p></div>
+      {gear.image && <figure><img src={gear.image.src} alt={gear.image.alt} fetchpriority="high" /></figure>}
+    </header>
+    <section aria-labelledby="metadata-title"><h2 id="metadata-title">Product details</h2><dl>
+      <div><dt>Brand</dt><dd>{gear.brand}</dd></div><div><dt>Category</dt><dd>{categoryLabels[gear.category]}</dd></div>
+      {gear.releaseYear && <div><dt>Release year</dt><dd>{gear.releaseYear}</dd></div>}
+    </dl></section>
+    <section aria-labelledby="specs-title"><h2 id="specs-title">Specifications</h2>
+      {gear.specs.length ? <dl>{gear.specs.map(spec => <div><dt>{spec.label}</dt><dd>{formatSpec(spec)}</dd></div>)}</dl> : <p class="quiet">Specifications have not been recorded.</p>}
+    </section>
+    <section aria-labelledby="usage-title"><h2 id="usage-title">In use</h2>
+      {gear.usageScenarios.length ? <ul>{gear.usageScenarios.map(scenario => <li>{scenario}</li>)}</ul> : <p class="quiet">Usage scenarios have not been recorded.</p>}
+    </section>
+    <section aria-labelledby="notes-title"><h2 id="notes-title">Personal notes</h2><div class="notes">
+      {gear.personalNotes.length ? gear.personalNotes.map(note => <p>{note}</p>) : <p class="quiet">Notes will be added over time.</p>}
+    </div></section>
+    <section aria-labelledby="ownership-title"><h2 id="ownership-title">Ownership</h2><dl>
+      <div><dt>Status</dt><dd>{statusLabels[gear.status]}</dd></div>
+      {gear.ownershipDates?.acquired && <div><dt>Acquired</dt><dd><time datetime={gear.ownershipDates.acquired}>{dateLabel(gear.ownershipDates.acquired)}</time></dd></div>}
+      {gear.ownershipDates?.relinquished && <div><dt>Relinquished</dt><dd><time datetime={gear.ownershipDates.relinquished}>{dateLabel(gear.ownershipDates.relinquished)}</time></dd></div>}
+      {gear.purchasePrice !== undefined && <div><dt>Purchase price</dt><dd>{gear.currency} {gear.purchasePrice.toLocaleString('en-GB', { maximumFractionDigits: 20 })}</dd></div>}
+    </dl></section>
+    {related.length > 0 && <section aria-labelledby="projects-title"><h2 id="projects-title">Related photographs</h2><ul>{related.map(project => <li><a href={`/work/${project.id}`}>{project.data.title}</a></li>)}</ul></section>}
+  </article>
+</GearLayout>
+<style>
+  .back { display: inline-block; margin-block-end: var(--space-8); font-size: var(--font-size-small); }
+  .detail-header { display: grid; gap: var(--space-7); margin-block-end: var(--section-spacing); }
+  h1 { font-size: clamp(2.5rem, 5vw, 5rem); }
+  .metadata, dt, .quiet { color: var(--color-text-muted); }
+  .metadata { font-size: var(--font-size-small); }
+  .summary, .notes { font-family: var(--font-family-editorial); font-size: var(--font-size-lead); }
+  .summary { max-inline-size: 42ch; }
+  figure { align-self: center; }
+  img { max-block-size: 28rem; object-fit: contain; margin-inline: auto; }
+  section { border-block-start: 1px solid var(--color-border); padding-block: var(--space-7); display: grid; gap: var(--space-5); }
+  section > :last-child { min-inline-size: 0; max-inline-size: var(--content-width-text); }
+  dl { margin: 0; }
+  dl > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--space-5); padding-block: var(--space-3); }
+  dd { margin: 0; }
+  dt { overflow-wrap: anywhere; }
+  .notes p { white-space: pre-line; }
+  @media (min-width: 48rem) {
+    .detail-header { grid-template-columns: 3fr 2fr; gap: var(--space-8); }
+    section { grid-template-columns: 1fr 2fr; gap: var(--space-8); }
+  }
+</style>

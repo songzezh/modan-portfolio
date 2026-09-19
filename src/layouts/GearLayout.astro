@@ -1,0 +1,9 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import GearNavigation from '../components/GearNavigation.astro';
+interface Props { title: string; description?: string }
+---
+<BaseLayout {...Astro.props}>
+  <GearNavigation />
+  <slot />
+</BaseLayout>

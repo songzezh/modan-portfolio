@@ -1,0 +1,46 @@
+---
+import GearLayout from '../../layouts/GearLayout.astro';
+import GearList from '../../components/GearList.astro';
+import GearFilterFields from '../../components/GearFilterFields.astro';
+import { getGear } from '../../lib/gear';
+import { availableGearFilters } from '../../lib/gear-filters';
+const entries = await getGear();
+const filters = availableGearFilters(entries.map(entry => entry.data));
+const primary = filters.filter(filter => ['category', 'brand', 'status'].includes(filter.key));
+const additional = filters.filter(filter => !['category', 'brand', 'status'].includes(filter.key));
+---
+<GearLayout title="Gear Archive — MODAN / 漠澹" description="An archive of cameras, lenses, and accessories, with specifications and personal notes.">
+  <header class="page-intro">
+    <a class="back" href="/gear">Gear / Overview</a>
+    <h1>Gear Archive</h1>
+    <p>A record of use, curiosity, and things kept along the way.</p>
+  </header>
+  <div data-gear-archive>
+    {entries.length > 0 && <form data-gear-filters hidden aria-label="Filter gear archive">
+      <GearFilterFields filters={primary} />
+      {additional.length > 0 && <details class="more-filters">
+        <summary>More filters <span data-gear-additional-count></span></summary>
+        <GearFilterFields filters={additional} />
+      </details>}
+      <div class="filter-footer"><p data-gear-count role="status" aria-live="polite" aria-atomic="true">{entries.length} items</p><button type="reset">Clear filters</button></div>
+    </form>}
+    <GearList entries={entries} />
+    <p class="empty" data-gear-empty hidden={entries.length > 0}>{entries.length ? 'No items match these filters. Try another combination or clear the filters.' : 'The archive is awaiting its first entry. Equipment and personal notes will appear here.'}</p>
+  </div>
+</GearLayout>
+<script>
+  import { initializeGearFilter } from '../../scripts/gear-filter';
+  document.querySelectorAll<HTMLElement>('[data-gear-archive]').forEach(initializeGearFilter);
+</script>
+<style>
+  .back { display: inline-block; margin-block-end: var(--space-6); font-size: var(--font-size-small); }
+  form { margin-block-start: var(--space-8); }
+  [hidden] { display: none !important; }
+  .more-filters { margin-block-start: var(--space-5); }
+  summary { cursor: pointer; padding-block: var(--space-3); min-block-size: 2.75rem; font-size: var(--font-size-small); }
+  .more-filters[open] summary { margin-block-end: var(--space-4); }
+  .filter-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin-block-start: var(--space-5); font-size: var(--font-size-caption); }
+  .filter-footer p { margin: 0; color: var(--color-text-muted); }
+  button { border: 0; background: transparent; padding: var(--space-2); min-block-size: 2.75rem; cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }
+  .empty { border-block-start: 1px solid var(--color-border); padding-block: var(--space-7); color: var(--color-text-muted); }
+</style>

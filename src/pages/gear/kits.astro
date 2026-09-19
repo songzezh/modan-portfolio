@@ -1,0 +1,82 @@
+---
+import GearLayout from '../../layouts/GearLayout.astro';
+import { getGearKits } from '../../lib/gear-kits';
+import { categoryLabels, formatSpec } from '../../lib/gear-display';
+const kits = await getGearKits();
+const weightFormat = new Intl.NumberFormat('en-GB', { maximumFractionDigits: 3 });
+---
+<GearLayout title="Gear Kits — MODAN / 漠澹" description="Saved combinations of equipment for different photography situations.">
+  <header class="page-intro">
+    <a class="back" href="/gear">← Gear / Overview</a>
+    <h1>Gear Kits</h1>
+    <p>What comes along. Equipment gathered for a place, a pace, a particular kind of light.</p>
+  </header>
+  {kits.length > 0 ? <ol class="kit-list" aria-label="Saved gear kits">
+    {kits.map(({ entry, items, totalWeightGrams }, index) => <li>
+      <article id={entry.id} aria-labelledby={`kit-${entry.id}`}>
+        <header class="kit-intro">
+          <p class="number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</p>
+          <h2 id={`kit-${entry.id}`}>{entry.data.name}</h2>
+          <p class="description">{entry.data.description}</p>
+          <h3 class="label">Usage scenarios</h3>
+          <ul class="scenarios">{entry.data.scenarios.map(scenario => <li>{scenario}</li>)}</ul>
+        </header>
+        <div class="kit-contents">
+          <h3>Included equipment</h3>
+          <ul class="equipment">
+            {items.map(item => {
+              const weight = item.specs.find(spec => spec.key === 'weight');
+              return <li>
+                <div><a href={`/gear/${item.slug}`}>{item.name}</a><p class="metadata">{item.brand} / {categoryLabels[item.category]}</p></div>
+                {weight && <span class="item-weight">{formatSpec(weight)}</span>}
+              </li>;
+            })}
+          </ul>
+          <div class="weight-note">
+            {totalWeightGrams !== undefined ? <>
+              <p class="total"><span>Total recorded weight</span><span>{weightFormat.format(totalWeightGrams)} g</span></p>
+              <p class="metadata">Sum of the included items’ recorded weights.</p>
+            </> : <p class="metadata">Total weight unavailable — complete weight data has not been recorded for every included item.</p>}
+          </div>
+          {entry.data.notes.length > 0 && <section class="notes" aria-labelledby={`notes-${entry.id}`}>
+            <h3 id={`notes-${entry.id}`}>Notes</h3>
+            {entry.data.notes.map(note => <p>{note}</p>)}
+          </section>}
+        </div>
+      </article>
+    </li>)}
+  </ol> : <div class="empty">
+    <h2>A place for what comes along.</h2>
+    <p>Saved kits will appear here as equipment is added to the archive.</p>
+    <a href="/gear/archive">Explore the Gear Archive →</a>
+  </div>}
+</GearLayout>
+<style>
+  .back { display: inline-block; margin-block-end: var(--space-6); font-size: var(--font-size-small); }
+  .kit-list { list-style: none; padding: 0; margin: var(--section-spacing) 0 0; }
+  .kit-list > li { border-block-start: 1px solid var(--color-border); }
+  article { display: grid; gap: var(--space-7); padding-block: var(--space-8) var(--space-9); scroll-margin-block-start: var(--space-6); }
+  .kit-intro { max-inline-size: 38ch; }
+  .number, .metadata, .item-weight, .scenarios, .label { font-size: var(--font-size-small); color: var(--color-text-muted); }
+  .number { margin-block-end: var(--space-6); }
+  h2 { font-size: clamp(2rem, 3vw, 3rem); }
+  .description, .notes p { font-family: var(--font-family-editorial); font-size: var(--font-size-lead); }
+  .label { font-family: var(--font-family-body); margin-block-start: var(--space-7); letter-spacing: normal; }
+  .scenarios { padding-inline-start: var(--space-4); }
+  .kit-contents { min-inline-size: 0; }
+  .equipment { list-style: none; padding: 0; margin-block: var(--space-5) 0; }
+  .equipment li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3) var(--space-5); padding-block: var(--space-5); border-block-end: 1px solid var(--color-border); }
+  .equipment a { font-family: var(--font-family-editorial); font-size: var(--font-size-lead); }
+  .equipment .metadata { margin: var(--space-2) 0 0; }
+  .item-weight { align-self: baseline; }
+  .weight-note { margin-block-start: var(--space-5); }
+  .total { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3); margin-block-end: var(--space-2); }
+  .notes { margin-block-start: var(--space-8); max-inline-size: var(--content-width-text); }
+  .notes p { white-space: pre-line; }
+  .empty { margin-block-start: var(--section-spacing); border-block-start: 1px solid var(--color-border); padding-block-start: var(--space-7); }
+  .empty p { color: var(--color-text-muted); }
+  @media (min-width: 48rem) {
+    article { grid-template-columns: 2fr 3fr; gap: var(--section-spacing); }
+    .kit-contents { padding-block-start: var(--space-6); }
+  }
+</style>
