@@ -59,25 +59,124 @@ npx astro dev
 ## Structure
 
 ```text
-public/
-  assets/       Files served unchanged at /assets/
-src/
-  components/   Reusable .astro components
-  content/      Local content; define collection schemas when needed
-  layouts/      Shared HTML document layouts
-  pages/        File-based routes
-  scripts/      Vanilla TypeScript or JavaScript browser modules
-  styles/       Plain CSS
+modan-portfolio/
+├── public/
+│   └── assets/
+│       └── placeholders/       Sample photographs, WebP variants, and asset notes
+├── src/
+│   ├── components/
+│   │   ├── Header.astro        Site branding and primary navigation
+│   │   ├── Footer.astro        Shared site footer
+│   │   ├── Lightbox.astro      Accessible photograph viewer
+│   │   ├── GearNavigation.astro    Camera gear section navigation
+│   │   ├── GearList.astro          Reusable equipment list
+│   │   └── GearFilterFields.astro  Shared equipment filter controls
+│   ├── content/
+│   │   ├── projects/          Photography series as JSON, plus authoring notes
+│   │   ├── journal/           Journal entries as Markdown with frontmatter
+│   │   ├── gear/              Equipment JSON collection and authoring notes
+│   │   └── gear-kits/         Equipment kit JSON collection and authoring notes
+│   ├── layouts/
+│   │   ├── BaseLayout.astro   HTML metadata, global CSS, header, footer, page shell
+│   │   └── GearLayout.astro   Shared layout for camera gear pages
+│   ├── lib/
+│   │   ├── projects.ts        Project queries and responsive image helpers
+│   │   ├── project-schema.ts  Project content validation
+│   │   ├── project-categories.ts   Shared photography categories
+│   │   ├── journal.ts         Journal content queries
+│   │   ├── journal-schema.ts  Journal content validation
+│   │   ├── gear.ts            Equipment content queries
+│   │   ├── gear-schema.ts     Equipment content validation
+│   │   ├── gear-display.ts    Equipment display helpers
+│   │   ├── gear-filters.ts    Equipment filtering logic
+│   │   ├── gear-comparison.ts Equipment comparison logic
+│   │   ├── gear-kits.ts       Kit queries and equipment reference resolution
+│   │   ├── gear-kit-schema.ts Kit content validation
+│   │   └── gear-kit-data.ts   Kit reference and total-weight helpers
+│   ├── pages/
+│   │   ├── index.astro        Homepage
+│   │   ├── about.astro        About page
+│   │   ├── work.astro         Photography project index
+│   │   ├── work/[slug].astro  Individual photography series
+│   │   ├── journal.astro      Journal index
+│   │   ├── journal/[slug].astro    Individual journal entries
+│   │   └── wiki/
+│   │       ├── index.astro    Knowledge topic index
+│   │       └── camera-gear/
+│   │           ├── index.astro    Camera gear overview
+│   │           ├── archive.astro  Filterable equipment archive
+│   │           ├── compare.astro  Equipment comparison page
+│   │           ├── kits.astro     Equipment kit combinations
+│   │           └── [slug].astro   Individual equipment details
+│   ├── scripts/
+│   │   ├── lightbox.ts        Viewer controls, keyboard, and touch interactions
+│   │   ├── gallery-filter.ts  Photography category filtering
+│   │   ├── gear-filter.ts     Equipment archive filter interactions
+│   │   ├── gear-compare.ts    Equipment comparison interactions
+│   │   └── README.md          Browser interaction documentation
+│   ├── styles/
+│   │   ├── tokens.css         Colors, typography, spacing, widths, and motion
+│   │   ├── global.css         Shared element styles and page introductions
+│   │   ├── wiki.css           Knowledge topic grid and cards
+│   │   ├── gear-compare.css   Equipment comparison styles
+│   │   └── README.md          Visual foundation and spacing reference
+│   └── content.config.ts      Collection loaders and schema registration
+├── tests/
+│   └── gear-kits.test.mjs     Kit validation, references, and weight calculations
+├── .gitignore                Excludes dependencies, build output, and local files
+├── .node-version             Recommended Node.js version
+├── astro.config.mjs          Static output and legacy gear URL redirects
+├── package.json              Dependencies and development/build/deploy commands
+├── package-lock.json         Locked dependency versions
+├── tsconfig.json             Strict Astro TypeScript configuration
+├── wrangler.jsonc            Cloudflare Workers Static Assets configuration
+└── README.md                 Project overview and development guide
 ```
+
+### Routes and content
+
+Astro uses file-based routing: `src/pages/work.astro` serves `/work`, while
+`src/pages/work/[slug].astro` generates individual project pages from content.
+Journal and equipment detail pages follow the same pattern. The canonical
+camera gear routes live under `/wiki/camera-gear`; legacy `/gear` routes are
+redirected through `astro.config.mjs`.
+
+`src/content.config.ts` registers four collections: `projects`, `journal`,
+`gear`, and `gearKits`. Their schemas live in `src/lib/*-schema.ts`;
+collection queries and shared data logic also live in `src/lib/`. Equipment
+and kit collections currently contain authoring notes but no JSON entries.
+
+To add content, follow the local guides for [photography projects](src/content/projects/README.md),
+[journal entries](src/content/journal/README.txt), [equipment](src/content/gear/README.md),
+and [equipment kits](src/content/gear-kits/README.md). Files in `public/` are
+served unchanged from the site root; for example,
+`public/assets/placeholders/coast.jpg` is available at
+`/assets/placeholders/coast.jpg`.
+
+### Layout, styling, and interactions
 
 Astro renders pages to static HTML at build time. TypeScript uses Astro's strict
 configuration. There are no frontend framework integrations or CSS frameworks.
-The homepage is an unstyled placeholder; visual design has not been implemented.
+`BaseLayout.astro` provides the shared page shell and imports `global.css`,
+which imports `tokens.css`. Page and component styles are colocated in Astro
+`<style>` blocks; shared topic and comparison styles live in `src/styles/`.
+See the [style guide](src/styles/README.md) for design tokens and spacing rules.
 
-Add client-side interactions with Astro `<script>` tags importing modules from
-`src/scripts/`. Astro processes and bundles these modules. No client-side
-JavaScript is shipped until interactions are added. Shared CSS is imported by
-`BaseLayout.astro`.
+Client-side interactions are implemented in `src/scripts/` and imported through
+Astro `<script>` tags on the pages or components that need them. Astro processes
+and bundles these modules for lightboxes, gallery filters, equipment filters,
+and comparisons. See the [interaction guide](src/scripts/README.md) for lightbox
+and gallery behavior.
+
+### Generated directories
+
+- `node_modules/`: installed dependencies.
+- `.astro/`: generated Astro types and content metadata.
+- `dist/`: generated static site, served by the Cloudflare deployment.
+- `.wrangler/`: local Wrangler state and cache.
+
+These directories are generated locally and excluded from version control.
+Edit source files rather than generated output.
 
 ## Cloudflare deployment
 
