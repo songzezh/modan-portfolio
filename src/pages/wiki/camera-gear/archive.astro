@@ -1,9 +1,9 @@
 ---
-import GearLayout from '../../layouts/GearLayout.astro';
-import GearList from '../../components/GearList.astro';
-import GearFilterFields from '../../components/GearFilterFields.astro';
-import { getGear } from '../../lib/gear';
-import { availableGearFilters } from '../../lib/gear-filters';
+import GearLayout from '../../../layouts/GearLayout.astro';
+import GearList from '../../../components/GearList.astro';
+import GearFilterFields from '../../../components/GearFilterFields.astro';
+import { getGear } from '../../../lib/gear';
+import { availableGearFilters } from '../../../lib/gear-filters';
 const entries = await getGear();
 const filters = availableGearFilters(entries.map(entry => entry.data));
 const primary = filters.filter(filter => ['category', 'brand', 'status'].includes(filter.key));
@@ -11,7 +11,7 @@ const additional = filters.filter(filter => !['category', 'brand', 'status'].inc
 ---
 <GearLayout title="Gear Archive — MODAN / 漠澹" description="An archive of cameras, lenses, and accessories, with specifications and personal notes.">
   <header class="page-intro">
-    <a class="back" href="/gear">Gear / Overview</a>
+    <a class="back" href="/wiki/camera-gear">Gear / Overview</a>
     <h1>Gear Archive</h1>
     <p>A record of use, curiosity, and things kept along the way.</p>
   </header>
@@ -29,7 +29,7 @@ const additional = filters.filter(filter => !['category', 'brand', 'status'].inc
   </div>
 </GearLayout>
 <script>
-  import { initializeGearFilter } from '../../scripts/gear-filter';
+  import { initializeGearFilter } from '../../../scripts/gear-filter';
   document.querySelectorAll<HTMLElement>('[data-gear-archive]').forEach(initializeGearFilter);
 </script>
 <style>
@@ -44,3 +44,5 @@ const additional = filters.filter(filter => !['category', 'brand', 'status'].inc
   button { border: 0; background: transparent; padding: var(--space-2); min-block-size: 2.75rem; cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }
   .empty { border-block-start: 1px solid var(--color-border); padding-block: var(--space-7); color: var(--color-text-muted); }
 </style>
+
+

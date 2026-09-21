@@ -1,7 +1,7 @@
 ---
-import GearLayout from '../../layouts/GearLayout.astro';
-import GearList from '../../components/GearList.astro';
-import { getGear } from '../../lib/gear';
+import GearLayout from '../../../layouts/GearLayout.astro';
+import GearList from '../../../components/GearList.astro';
+import { getGear } from '../../../lib/gear';
 const entries = await getGear();
 const owned = entries.filter(({ data }) => data.status === 'owned');
 ---
@@ -25,3 +25,5 @@ const owned = entries.filter(({ data }) => data.status === 'owned');
   .section-heading span { font-size: var(--font-size-small); }
   .empty { border-block-start: 1px solid var(--color-border); padding-block: var(--space-7); margin-block-start: var(--space-5); }
 </style>
+
+

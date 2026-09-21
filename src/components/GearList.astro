@@ -12,11 +12,11 @@ const { entries } = Astro.props;
       <span class="number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
       <div class="gear-note">
         <p class="meta">{gear.brand} / {categoryLabels[gear.category]}</p>
-        <h2 id={`gear-${gear.slug}`}><a href={`/gear/${gear.slug}`}>{gear.name}</a></h2>
+        <h2 id={`gear-${gear.slug}`}><a href={`/wiki/camera-gear/${gear.slug}`}>{gear.name}</a></h2>
         <p class="status">{statusLabels[gear.status]}</p>
         {gear.specs.length > 0 && <dl>{gear.specs.slice(0, 2).map(spec => <div><dt>{spec.label}</dt><dd>{formatSpec(spec)}</dd></div>)}</dl>}
       </div>
-      {gear.image && <a class="gear-image" href={`/gear/${gear.slug}`} aria-label={`View ${gear.name}`}>
+      {gear.image && <a class="gear-image" href={`/wiki/camera-gear/${gear.slug}`} aria-label={`View ${gear.name}`}>
         <img src={gear.image.src} alt={gear.image.alt} loading="lazy" decoding="async" />
       </a>}
     </article>
@@ -43,3 +43,4 @@ const { entries } = Astro.props;
     .gear-image { grid-column: 3; }
   }
 </style>
+

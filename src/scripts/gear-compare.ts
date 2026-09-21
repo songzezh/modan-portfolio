@@ -39,7 +39,7 @@ export function initializeGearComparison(root: HTMLElement): void {
       const cell = document.createElement('th');
       cell.scope = 'col';
       const link = document.createElement('a');
-      link.href = `/gear/${item.slug}`;
+      link.href = `/wiki/camera-gear/${item.slug}`;
       link.textContent = item.name;
       cell.append(link);
       heading.append(cell);
@@ -87,3 +87,4 @@ export function initializeGearComparison(root: HTMLElement): void {
   readURL();
   controls.hidden = false;
 }
+

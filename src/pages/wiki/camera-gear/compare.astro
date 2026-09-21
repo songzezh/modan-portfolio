@@ -1,13 +1,13 @@
 ---
-import GearLayout from '../../layouts/GearLayout.astro';
-import { getGear } from '../../lib/gear';
-import { toComparisonItem } from '../../lib/gear-comparison';
-import '../../styles/gear-compare.css';
+import GearLayout from '../../../layouts/GearLayout.astro';
+import { getGear } from '../../../lib/gear';
+import { toComparisonItem } from '../../../lib/gear-comparison';
+import '../../../styles/gear-compare.css';
 const items = (await getGear()).map(entry => toComparisonItem(entry.data));
 ---
 <GearLayout title="Compare gear — MODAN / 漠澹" description="Inspect recorded gear specifications side by side.">
   <header class="page-intro">
-    <a class="compare-back" href="/gear/archive">← Gear Archive</a>
+    <a class="compare-back" href="/wiki/camera-gear/archive">← Gear Archive</a>
     <h1>Side by side.</h1>
     <p>Two to four items. A closer look at their recorded specifications.</p>
   </header>
@@ -41,10 +41,12 @@ const items = (await getGear()).map(entry => toComparisonItem(entry.data));
         </table>
       </div>
     </div>
-    <noscript><p>Interactive selection requires JavaScript. You can read all specifications on the <a href="/gear/archive">Gear Archive</a> item pages.</p></noscript>
+    <noscript><p>Interactive selection requires JavaScript. You can read all specifications on the <a href="/wiki/camera-gear/archive">Gear Archive</a> item pages.</p></noscript>
   </div>
 </GearLayout>
 <script>
-  import { initializeGearComparison } from '../../scripts/gear-compare';
+  import { initializeGearComparison } from '../../../scripts/gear-compare';
   document.querySelectorAll<HTMLElement>('[data-gear-compare]').forEach(initializeGearComparison);
 </script>
+
+

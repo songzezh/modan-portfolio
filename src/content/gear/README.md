@@ -3,7 +3,7 @@
 Add one JSON file per item here. The filename must match its lowercase,
 hyphen-separated `slug` (for example, `example-camera.json`). This directory is
 intentionally empty of gear records until real archive details are supplied.
-The collection feeds `/gear`, `/gear/archive`, and `/gear/[slug]`.
+The collection feeds `/wiki/camera-gear`, `/wiki/camera-gear/archive`, and `/wiki/camera-gear/[slug]`.
 The slugs `archive`, `compare`, and `kits` are reserved for gear pages and must not be used for items.
 The first two specifications appear in archive rows; put identifying details first.
 For mount filtering, use the specification key `lens-mount` with a text value
@@ -32,7 +32,7 @@ bins appear. Missing or unsupported weights remain visible under “All” but d
 not match a weight range. All filters combine with AND; Clear filters restores
 every item, including those with missing specifications.
 
-`/gear/compare` compares two to four entries and restores selections from
+`/wiki/camera-gear/compare` compares two to four entries and restores selections from
 `?items=slug-a,slug-b`. Specifications align by their stable `key`, not their label
 or array position. Use the same key for equivalent fields and consistent labels.
 Units remain as recorded; no conversion, scoring, or recommendations are applied.

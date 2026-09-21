@@ -1,9 +1,9 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
-import GearLayout from '../../layouts/GearLayout.astro';
-import { getGear } from '../../lib/gear';
-import { getProjects } from '../../lib/projects';
-import { categoryLabels, statusLabels, formatSpec } from '../../lib/gear-display';
+import GearLayout from '../../../layouts/GearLayout.astro';
+import { getGear } from '../../../lib/gear';
+import { getProjects } from '../../../lib/projects';
+import { categoryLabels, statusLabels, formatSpec } from '../../../lib/gear-display';
 export const getStaticPaths = (async () => (await getGear()).map(entry => ({
   params: { slug: entry.id }, props: { gear: entry.data },
 }))) satisfies GetStaticPaths;
@@ -14,7 +14,7 @@ const dateLabel = (value: string) => new Intl.DateTimeFormat('en-GB', { day: 'nu
 ---
 <GearLayout title={`${gear.name} — Gear — MODAN / 漠澹`} description={gear.summary}>
   <article>
-    <a class="back" href="/gear/archive">← Gear Archive</a>
+    <a class="back" href="/wiki/camera-gear/archive">← Gear Archive</a>
     <header class="detail-header">
       <div><p class="metadata">{gear.brand} / {categoryLabels[gear.category]}</p><h1>{gear.name}</h1><p class="summary">{gear.summary}</p></div>
       {gear.image && <figure><img src={gear.image.src} alt={gear.image.alt} fetchpriority="high" /></figure>}
@@ -63,3 +63,5 @@ const dateLabel = (value: string) => new Intl.DateTimeFormat('en-GB', { day: 'nu
     section { grid-template-columns: 1fr 2fr; gap: var(--space-8); }
   }
 </style>
+
+

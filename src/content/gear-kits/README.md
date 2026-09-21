@@ -7,7 +7,7 @@ names, not predefined combinations or recommendations.
 
 The model is defined in `src/lib/gear-kit-schema.ts`, with inferred `GearKit` and
 `GearKitInput` types. `getGearKits()` resolves equipment and derives weight at build
-time. `/gear/kits` renders the result as static HTML with no JavaScript required.
+time. `/wiki/camera-gear/kits` renders the result as static HTML with no JavaScript required.
 
 | Field | Content |
 | --- | --- |

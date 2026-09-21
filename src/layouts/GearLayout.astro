@@ -4,6 +4,11 @@ import GearNavigation from '../components/GearNavigation.astro';
 interface Props { title: string; description?: string }
 ---
 <BaseLayout {...Astro.props}>
+  <p class="wiki-back"><a href="/wiki">← Photography Wiki</a> / Camera Gear</p>
   <GearNavigation />
   <slot />
 </BaseLayout>
+
+<style>
+  .wiki-back { color: var(--color-text-muted); font-size: var(--font-size-small); margin-block-end: var(--space-5); }
+</style>

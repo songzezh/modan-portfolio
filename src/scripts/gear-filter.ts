@@ -35,3 +35,4 @@ export function initializeGearFilter(root: HTMLElement): void {
   update();
   form.hidden = false;
 }
+

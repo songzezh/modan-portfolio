@@ -1,15 +1,16 @@
 ---
 const pathname = Astro.url.pathname.replace(/\/+$/, '');
 const links = [
-  { href: '/gear/archive', label: 'ARCHIVE' },
-  { href: '/gear/kits', label: 'KITS' },
-  { href: '/gear/compare', label: 'COMPARE' },
+  { href: '/wiki/camera-gear', label: 'OVERVIEW' },
+  { href: '/wiki/camera-gear/archive', label: 'ARCHIVE' },
+  { href: '/wiki/camera-gear/kits', label: 'KITS' },
+  { href: '/wiki/camera-gear/compare', label: 'COMPARE' },
 ];
-const isDetail = pathname.startsWith('/gear/') && !links.some(link => link.href === pathname);
+const isDetail = pathname.startsWith('/wiki/camera-gear/') && !links.some(link => link.href === pathname);
 ---
 <nav class="gear-navigation" aria-label="Gear navigation">
   <ul>{links.map(({ href, label }) => <li>
-    <a href={href} aria-current={pathname === href ? 'page' : isDetail && href === '/gear/archive' ? 'location' : undefined}>{label}</a>
+    <a href={href} aria-current={pathname === href ? 'page' : isDetail && href === '/wiki/camera-gear/archive' ? 'location' : undefined}>{label}</a>
   </li>)}</ul>
 </nav>
 <style>
@@ -18,3 +19,4 @@ const isDetail = pathname.startsWith('/gear/') && !links.some(link => link.href 
   a { display: inline-flex; align-items: center; min-block-size: 2.75rem; padding-block: var(--space-3); font-size: var(--font-size-caption); letter-spacing: var(--letter-spacing-label); }
   @media (max-width: 25rem) { ul { column-gap: var(--space-5); } }
 </style>
+
