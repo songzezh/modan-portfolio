@@ -3,7 +3,6 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const links = [
-  { href: '/', label: 'MÒ DÀN' },
   { href: '/work', label: 'WORK' },
   { href: '/journal', label: 'JOURNAL' },
   { href: '/wiki', label: 'WIKI' },
@@ -12,76 +11,145 @@ const links = [
 ---
 
 <header class="site-header">
+  <a class="brand" href="/" aria-label="MÒ DÀN / 漠澹 — Home" aria-current={pathname === '/' ? 'page' : undefined}>
+    <span class="brand-name">MÒ DÀN</span>
+    <span class="brand-divider" aria-hidden="true"></span>
+    <span class="brand-chinese" lang="zh-Hans">漠澹</span>
+  </a>
   <nav aria-label="Main navigation">
     <ul>
       {links.map(({ href, label }) => (
         <li>
-          <a href={href} aria-current={pathname === href ? 'page' : href !== '/' && pathname.startsWith(`${href}/`) ? 'location' : undefined}>
+          <a href={href} aria-current={pathname === href ? 'page' : pathname.startsWith(`${href}/`) ? 'location' : undefined}>
             {label}
           </a>
         </li>
       ))}
     </ul>
   </nav>
-  <ThemeToggle />
+  <div class="header-tools"><ThemeToggle /></div>
 </header>
 
 <style>
   .site-header {
-    position: relative;
-    padding-block: var(--space-5);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--space-5);
+    padding-block: var(--space-5) 0;
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: var(--space-4);
+    min-block-size: 2.75rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .brand-name {
+    font-family: var(--font-family-editorial);
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: 0.035em;
+  }
+
+  .brand-divider {
+    inline-size: 1px;
+    block-size: 1rem;
+    background: var(--color-border);
+  }
+
+  .brand-chinese {
+    font-family: var(--font-family-editorial);
+    font-size: var(--font-size-small);
+    letter-spacing: 0.18em;
+  }
+
+  nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    min-inline-size: 0;
+    margin-block-start: var(--space-4);
   }
 
   ul {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-2) var(--space-5);
+    justify-content: space-between;
+    gap: var(--space-3);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  li:first-child {
-    flex-basis: 100%;
-  }
-
-  a {
-    display: inline-flex;
+  nav a {
+    position: relative;
+    display: flex;
     align-items: center;
-    min-block-size: 2.75rem;
-    font-size: var(--font-size-small);
-    letter-spacing: var(--letter-spacing-label);
-  }
-
-  li:first-child a {
-    color: var(--color-text);
-    font-size: var(--font-size-body);
+    justify-content: center;
+    min-block-size: 3.25rem;
+    font-size: 0.75rem;
     font-weight: var(--font-weight-medium);
+    letter-spacing: 0.12em;
+    text-decoration: none;
   }
 
-  /* Matches --breakpoint-small; CSS variables cannot drive media queries. */
-  @media (min-width: 40rem) {
+  nav a::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: -1px;
+    block-size: 2px;
+    background: transparent;
+    transition: background-color var(--duration-fast) var(--ease-color);
+  }
+
+  nav a[aria-current] {
+    color: var(--color-primary);
+  }
+
+  nav a[aria-current]::after {
+    background: var(--color-primary);
+  }
+
+  .header-tools {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    nav a:hover::after { background: var(--color-text-muted); }
+    nav a[aria-current]:hover::after { background: var(--color-primary); }
+  }
+
+  @media (min-width: 48rem) {
     .site-header {
-      display: flex;
-      align-items: center;
-      gap: var(--space-5);
-      padding-block: var(--space-7);
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      column-gap: var(--space-6);
+      padding-block: var(--space-5);
     }
 
     nav {
-      flex: 1;
-      min-inline-size: 0;
+      grid-column: 2;
+      grid-row: 1;
+      margin-block-start: 0;
     }
 
-    ul {
-      column-gap: var(--space-7);
-    }
+    ul { gap: clamp(1.5rem, 3vw, 3rem); }
+    nav a { min-block-size: 2.75rem; }
+    nav a::after { inset-block-end: 0; }
 
-    li:first-child {
-      flex-basis: auto;
-      margin-inline-end: auto;
+    .header-tools {
+      grid-column: 3;
+      padding-inline-start: var(--space-6);
+      border-inline-start: 1px solid var(--color-border);
     }
   }
 </style>
-
