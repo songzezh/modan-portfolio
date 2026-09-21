@@ -31,7 +31,11 @@ JavaScript, all content and project links remain usable.
 Native buttons support Tab, Enter, and Space, expose `aria-pressed`, and keep
 focus in the controls while results change. A polite status announces the
 category and count. Nonmatching entries use `hidden`, removing their links from
-keyboard navigation. Empty results offer a message; All restores every entry.
+keyboard navigation. All series are shown initially, with no All control.
+The header word cloud weights Street, Portrait, and Travel by their series
+counts. Selecting a category centers it at the largest size; selecting it again
+restores all series and the original weighted cloud. Empty results invite
+visitors to choose another category.
 Visible rows retain alternating alignment and original series numbers.
 
 Filtering updates immediately without fading photographs or delaying keyboard

@@ -4,24 +4,29 @@ import { getProjects, getCoverImage, getImageSrcSet } from '../lib/projects';
 import { projectCategories, projectCategoryLabels } from '../lib/project-categories';
 
 const projects = await getProjects();
+const categoryCounts = Object.fromEntries(projectCategories.map((category) => [
+  category, projects.filter((project) => project.data.categories.includes(category)).length,
+]));
 ---
 
 <BaseLayout title="Work — MODAN / 漠澹" description="Photographic work by MODAN / 漠澹.">
-  <header class="page-intro">
-    <h1>Work</h1>
-    <p>Photographs and series.</p>
-  </header>
-
   <div class="gallery" data-filter-gallery>
+  <header class="work-header">
+    <h1>Works<span class="title-divider" aria-hidden="true"> /</span></h1>
     <div class="filter-controls" data-filter-controls hidden>
-      <div class="filter-buttons" role="group" aria-label="Filter photography series">
-        <button type="button" class="filter" data-filter="all" aria-pressed="true" aria-controls="work-series">All</button>
+      <ul class="filter-buttons" aria-label="Filter photography series">
         {projectCategories.map((category) => (
-          <button type="button" class="filter" data-filter={category} aria-pressed="false" aria-controls="work-series">{projectCategoryLabels[category]}</button>
+          <li>
+            <button type="button" class="filter" data-filter={category} aria-pressed="false" aria-controls="work-series"
+              aria-label={`${projectCategoryLabels[category]}, ${categoryCounts[category]} series`}>
+              {projectCategoryLabels[category]}
+            </button>
+          </li>
         ))}
-      </div>
-      <p class="filter-status" data-filter-status role="status" aria-live="polite" aria-atomic="true">All: {projects.length} series shown.</p>
+      </ul>
+      <p class="filter-status" data-filter-status role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
+  </header>
   <ol id="work-series" class="series-list" data-filter-list aria-label="Photography series">
     {projects.map((project, index) => {
       const image = getCoverImage(project);
@@ -66,22 +71,32 @@ const projects = await getProjects();
   .series:not([hidden]) ~ .series:not([hidden]) { margin-block-start: var(--image-series-gap); }
   .series { display: grid; gap: var(--space-6); }
   .gallery [hidden] { display: none; }
-  .filter-controls {
-    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-    gap: var(--space-4) var(--space-6); margin-block-start: var(--space-7);
+  .work-header {
+    display: flex; flex-wrap: wrap;
+    column-gap: var(--space-4); align-items: baseline;
+    text-align: left;
   }
-  .filter-buttons { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
+  .work-header h1 { margin: 0; }
+  .work-header::after { content: ''; order: 1; flex-basis: 100%; }
+  .title-divider { display: none; color: var(--color-text-muted); }
+  .work-header:has([data-selected]) .title-divider { display: inline; }
+  .filter-controls, .filter-buttons { display: contents; }
+  .filter-buttons { margin: 0; padding: 0; list-style: none; }
+  .filter-buttons li { order: 2; margin-block-start: var(--space-5); }
+  .filter-controls[data-selected] li:has([aria-pressed='true']) { order: 1; margin-block-start: 0; }
   .filter {
-    padding: var(--space-2) var(--space-1); min-block-size: 2.75rem; min-inline-size: 2.75rem;
+    padding: var(--space-2) 0; min-block-size: 2.75rem; min-inline-size: 2.75rem;
     border: 0; border-radius: 0; background: transparent;
-    color: var(--color-text-muted); font-size: var(--font-size-small); cursor: pointer;
+    color: var(--color-text-muted); font-family: var(--font-family-editorial); font-style: italic;
+    font-size: var(--font-size-lead); line-height: var(--line-height-heading); letter-spacing: var(--letter-spacing-heading); cursor: pointer;
   }
+  .filter[aria-pressed='true'] { padding: 0; font-size: var(--font-size-title); font-style: normal; font-weight: var(--font-weight-regular); text-decoration: none; }
   @media (hover: hover) and (pointer: fine) {
     .filter:hover { color: var(--color-primary); text-decoration: underline; text-underline-offset: 0.2em; }
     .series:has(.series-image:hover) h2 a { color: var(--color-primary-hover); text-decoration-line: underline; }
   }
   .series:has(.series-image:focus-visible) h2 a { color: var(--color-primary); text-decoration-line: underline; transition: none; }
-  .filter-status { margin: 0; color: var(--color-text-muted); font-size: var(--font-size-caption); }
+  .filter-status { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .series-heading { max-inline-size: var(--content-width-text); }
   .series-number, .series-subtitle, .series-meta {
     color: var(--color-text-muted);
