@@ -3,13 +3,6 @@
   margin-inline: auto;
 }
 
-.topics-section .eyebrow {
-  margin-block-end: var(--space-3);
-  color: var(--color-primary);
-  font-size: var(--font-size-caption);
-  letter-spacing: 0.2em;
-}
-
 .topics-section h1 {
   margin-block-end: var(--space-8);
 }
