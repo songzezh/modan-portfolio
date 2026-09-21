@@ -1,0 +1,99 @@
+.topics-section {
+  max-inline-size: var(--content-width-default);
+  margin-inline: auto;
+}
+
+.topics-section .eyebrow {
+  margin-block-end: var(--space-3);
+  color: var(--color-primary);
+  font-size: var(--font-size-caption);
+  letter-spacing: 0.2em;
+}
+
+.topics-section h1 {
+  margin-block-end: var(--space-8);
+}
+
+.topics-section .topic-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.topics-section .topic-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-6) var(--space-4);
+  min-inline-size: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.topics-section .topic-index {
+  color: var(--color-primary);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: var(--font-size-caption);
+}
+
+.topics-section .topic-symbol {
+  justify-self: end;
+  color: var(--color-primary);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.topics-section .topic-card > div {
+  grid-column: 1 / -1;
+  align-self: end;
+}
+
+.topics-section .topic-card h2 {
+  margin-block-end: var(--space-3);
+  font-size: var(--font-size-heading-small);
+}
+
+.topics-section .topic-card p {
+  max-inline-size: 54ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+}
+
+.topics-section .topic-keywords {
+  display: block;
+  margin-block-start: var(--space-5);
+  color: var(--color-primary);
+  font-size: var(--font-size-caption);
+  letter-spacing: 0.025em;
+}
+
+.topics-section .featured h2 {
+  font-size: var(--font-size-heading);
+}
+
+@media (min-width: 40rem) {
+  .topics-section .topic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topics-section .featured,
+  .topics-section .wide {
+    grid-column: span 2;
+  }
+
+  .topics-section .featured {
+    min-block-size: 20rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .topics-section .topic-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .topics-section .featured {
+    grid-row: span 2;
+  }
+}
