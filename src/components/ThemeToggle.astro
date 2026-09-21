@@ -56,7 +56,9 @@
   }
 
   .theme-toggle[hidden] { display: none; }
-  .theme-toggle:hover { background: var(--color-primary-soft); }
+  @media (hover: hover) and (pointer: fine) {
+    .theme-toggle:hover { background: var(--color-primary-soft); border-color: var(--color-primary); }
+  }
   .sun { display: none; }
   :global([data-theme='dark']) .sun { display: block; }
   :global([data-theme='dark']) .moon { display: none; }

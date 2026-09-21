@@ -68,7 +68,10 @@ const { id, label = 'Photograph viewer' } = Astro.props;
     cursor: pointer;
     touch-action: manipulation;
   }
-  .lightbox button:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  @media (hover: hover) and (pointer: fine) {
+    .lightbox button:hover { color: var(--color-lightbox-text); background: rgb(255 255 255 / 8%); text-decoration: underline; text-underline-offset: 0.2em; }
+  }
+  .lightbox button:active { background: rgb(255 255 255 / 14%); }
   .lightbox :focus-visible { outline: 2px solid var(--color-lightbox-text); outline-offset: 2px; }
   .lightbox [hidden] { display: none; }
   .sr-only { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

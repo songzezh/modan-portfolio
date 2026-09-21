@@ -17,8 +17,8 @@ Scroll position and existing inline body styles are restored when closing.
 
 Images use object-fit contain. Tapping letterboxing counts as a backdrop tap;
 tapping the photograph does not close it. Vertical gestures and pinch zoom
-are retained. Controls remain visible and no animated transitions are used,
-including when reduced motion is requested. Failed images expose a status
+are retained. Controls remain visible with subtle color feedback; images and
+opening/closing remain instant. Failed images expose a status
 message while navigation and closing remain available.
 
 ## Gallery filtering
@@ -34,6 +34,5 @@ category and count. Nonmatching entries use `hidden`, removing their links from
 keyboard navigation. Empty results offer a message; All restores every entry.
 Visible rows retain alternating alignment and original series numbers.
 
-Filtering uses a short token-based opacity change, cancels in-progress effects
-on rapid selections, and skips animation under reduced motion. No library,
-network request, or page reload is required.
+Filtering updates immediately without fading photographs or delaying keyboard
+actions. No library, network request, or page reload is required.

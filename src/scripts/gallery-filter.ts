@@ -13,7 +13,6 @@ export function initializeGalleryFilter(gallery: HTMLElement): void {
   if (!buttons.length) return;
   enhanced.add(gallery);
   let selected = 'all';
-  let animation: Animation | undefined;
 
   controls.addEventListener('click', (event) => {
     const button = event.target instanceof Element
@@ -22,7 +21,6 @@ export function initializeGalleryFilter(gallery: HTMLElement): void {
     const filter = button.dataset.filter!;
     if (filter === selected) return;
     selected = filter;
-    animation?.cancel();
     let count = 0;
     for (const item of items) {
       const matches = filter === 'all' || item.dataset.categories?.split(' ').includes(filter);
@@ -37,10 +35,6 @@ export function initializeGalleryFilter(gallery: HTMLElement): void {
     empty.textContent = filter === 'all' ? 'New photography series will appear here.'
       : `No ${label.toLowerCase()} series yet. Choose another filter or view All.`;
     list.hidden = count === 0;
-    if (count && !matchMedia('(prefers-reduced-motion: reduce)').matches && typeof list.animate === 'function') {
-      const duration = parseFloat(getComputedStyle(gallery).getPropertyValue('--duration-fast')) || 0;
-      animation = list.animate([{ opacity: 0.8 }, { opacity: 1 }], { duration, easing: 'ease-out' });
-    }
   });
   controls.hidden = false;
 }

@@ -58,9 +58,10 @@
 
   /* Motion is opt-in; avoid animation on photographs by default. */
   --duration-instant: 0ms;
-  --duration-fast: 120ms;
+  --duration-fast: 150ms;
   --duration-base: 200ms;
-  --duration-slow: 320ms;
+  --duration-slow: 240ms;
+  --ease-color: ease;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
 

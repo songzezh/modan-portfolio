@@ -23,13 +23,16 @@
   padding: clamp(1.25rem, 3vw, 2rem);
   border: 1px solid var(--color-border);
   border-radius: 0.5rem;
+  transition: border-color var(--duration-base) var(--ease-color);
 }
 
 .topics-section .topic-link { text-decoration: none; }
 .topics-section .topic-link::after { content: ''; position: absolute; inset: 0; border-radius: 0.5rem; }
-.topics-section .topic-link:hover { text-decoration: underline; }
-.topics-section .topic-card:has(.topic-link:hover),
-.topics-section .topic-card:has(.topic-link:focus-visible) { border-color: var(--color-primary); }
+@media (hover: hover) and (pointer: fine) {
+  .topics-section .topic-link:hover { text-decoration: underline; }
+  .topics-section .topic-card:has(.topic-link:hover) { border-color: var(--color-primary); }
+}
+.topics-section .topic-card:has(.topic-link:focus-visible) { border-color: var(--color-primary); transition: none; }
 .topics-section .topic-link:focus-visible::after { outline: 2px solid var(--color-primary); outline-offset: 4px; }
 
 .topics-section .topic-index {

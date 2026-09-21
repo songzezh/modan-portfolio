@@ -39,6 +39,16 @@ focus, and `aria-current`. Filter buttons can opt into `.filter` and indicate
 selection using `aria-pressed="true"`, underlining, and weight as well as color.
 Keyboard focus uses a visible outline. Motion honors reduced-motion settings.
 
+## Interaction rhythm
+
+Color, background, and control borders transition over 150ms with `ease`;
+topic-card borders use 200ms. Hover feedback is restricted to fine pointers
+that support hover. Press feedback changes the button background immediately,
+and keyboard focus never waits for a transition. Reduced motion sets these
+durations to zero. Avoid `transition: all`, image fades, zoom, lift, stagger,
+and animated result reordering. Gallery filters and lightbox navigation update
+immediately. Theme changes do not fade the page or its photographs.
+
 These files establish foundations only; no pages, filter controls, theme toggle,
 or lightbox behavior are implemented here. Future components must use tokens
 and verify contrast on their actual backgrounds, particularly over photography.

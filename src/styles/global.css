@@ -119,10 +119,9 @@ a {
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
   text-decoration-skip-ink: auto;
-  transition: color var(--duration-fast) var(--ease-standard);
+  transition: color var(--duration-fast) var(--ease-color);
 }
 
-a:hover,
 a:focus-visible {
   color: var(--color-primary-hover);
   text-decoration-thickness: 2px;
@@ -134,7 +133,6 @@ nav a {
   text-decoration-line: none;
 }
 
-nav a:hover,
 nav a:focus-visible,
 a[aria-current]:not([aria-current='false']) {
   color: var(--color-primary);
@@ -156,6 +154,35 @@ textarea {
   font: inherit;
   color: inherit;
 }
+
+/* Editorial feedback: color changes only; controls and photographs stay still. */
+button,
+input,
+select,
+textarea {
+  transition: color var(--duration-fast) var(--ease-color),
+    background-color var(--duration-fast) var(--ease-color),
+    border-color var(--duration-fast) var(--ease-color);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover { color: var(--color-primary-hover); text-decoration-thickness: 2px; }
+  nav a:hover { color: var(--color-primary); text-decoration-line: underline; }
+  button:enabled:hover { color: var(--color-primary-hover); }
+  :is(input, select, textarea):enabled:hover { border-color: var(--color-text-muted); }
+}
+
+button:enabled:active {
+  background-color: var(--color-primary-soft);
+  transition-duration: 0ms;
+}
+
+:is(input, select, textarea):focus-visible {
+  border-color: var(--color-primary);
+}
+
+/* Keyboard feedback is immediate, including when a hover is interrupted. */
+:is(a, button, input, select, textarea):focus-visible { transition: none; }
 
 /* Keep native control affordances until individual controls are designed. */
 :focus-visible {

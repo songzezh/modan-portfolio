@@ -75,9 +75,12 @@ const projects = await getProjects();
     padding: var(--space-2) var(--space-1); min-block-size: 2.75rem; min-inline-size: 2.75rem;
     border: 0; border-radius: 0; background: transparent;
     color: var(--color-text-muted); font-size: var(--font-size-small); cursor: pointer;
-    transition: color var(--duration-fast) var(--ease-standard);
   }
-  .filter:hover { color: var(--color-primary); text-decoration: underline; text-underline-offset: 0.2em; }
+  @media (hover: hover) and (pointer: fine) {
+    .filter:hover { color: var(--color-primary); text-decoration: underline; text-underline-offset: 0.2em; }
+    .series:has(.series-image:hover) h2 a { color: var(--color-primary-hover); text-decoration-line: underline; }
+  }
+  .series:has(.series-image:focus-visible) h2 a { color: var(--color-primary); text-decoration-line: underline; transition: none; }
   .filter-status { margin: 0; color: var(--color-text-muted); font-size: var(--font-size-caption); }
   .series-heading { max-inline-size: var(--content-width-text); }
   .series-number, .series-subtitle, .series-meta {
