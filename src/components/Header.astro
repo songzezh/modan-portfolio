@@ -1,7 +1,9 @@
 ---
+import ThemeToggle from './ThemeToggle.astro';
+
 const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const links = [
-  { href: '/', label: 'MODAN' },
+  { href: '/', label: 'MÒ DÀN' },
   { href: '/work', label: 'WORK' },
   { href: '/journal', label: 'JOURNAL' },
   { href: '/wiki', label: 'WIKI' },
@@ -21,10 +23,12 @@ const links = [
       ))}
     </ul>
   </nav>
+  <ThemeToggle />
 </header>
 
 <style>
   .site-header {
+    position: relative;
     padding-block: var(--space-5);
   }
 
@@ -59,7 +63,15 @@ const links = [
   /* Matches --breakpoint-small; CSS variables cannot drive media queries. */
   @media (min-width: 40rem) {
     .site-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
       padding-block: var(--space-7);
+    }
+
+    nav {
+      flex: 1;
+      min-inline-size: 0;
     }
 
     ul {
