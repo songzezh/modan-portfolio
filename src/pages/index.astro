@@ -10,7 +10,6 @@ const leadImage = lead && getCoverImage(lead);
 <BaseLayout title="MÒ DÀN / 漠澹 — Photography & Visual Journal" description="Photography and a visual journal by MÒ DÀN / 漠澹.">
   <header class="identity">
     <div>
-      <p class="eyebrow">Photography &amp; visual journal</p>
       <h1><span class="identity-roman">MÒ DÀN</span> <span class="identity-companion"><span class="identity-divider">/</span> <span class="identity-chinese" lang="zh-Hans">漠澹</span></span></h1>
     </div>
     <p class="identity-note">A place for looking.<br />For what stays, quietly.</p>
@@ -100,10 +99,14 @@ const leadImage = lead && getCoverImage(lead);
   }
 
   .identity-chinese {
-    font-family: var(--font-family-body);
-    font-size: 0.9em;
+    font-family: 'Songti SC', 'STSong', 'Source Han Serif SC',
+      'Noto Serif CJK SC', SimSun, serif;
+    font-size: 0.82em;
     font-weight: var(--font-weight-regular);
-    letter-spacing: 0.02em;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    vertical-align: 0.04em;
+    font-synthesis: none;
   }
 
   .identity-divider {
