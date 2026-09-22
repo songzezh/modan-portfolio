@@ -37,7 +37,7 @@
 
 .topics-section .topic-index {
   color: var(--color-primary);
-  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-family: var(--font-family-monospace);
   font-size: var(--font-size-caption);
 }
 

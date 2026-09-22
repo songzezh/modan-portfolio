@@ -1,13 +1,19 @@
 /* MODAN / 漠澹 — white paper, forest-green ink, space for photography. */
 :root {
-  /* Local font stacks; no external font requests or required downloads. */
-  --font-family-body: 'Helvetica Neue', Helvetica, 'PingFang SC',
-    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-family-editorial: 'Iowan Old Style', 'Palatino Linotype',
-    'Book Antiqua', Palatino, 'Songti SC', 'Noto Serif CJK SC', serif;
+  /* Local-first book typography; no external requests or required downloads. */
+  --font-family-body: Charter, 'Bitstream Charter', 'Sitka Text',
+    'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Palatino,
+    'Source Han Serif SC', 'Noto Serif CJK SC', 'Songti SC', STSong, serif;
+  --font-family-editorial: 'Iowan Old Style', Baskerville,
+    'Baskerville Old Face', 'Palatino Linotype', 'Book Antiqua', Palatino,
+    'Source Han Serif SC', 'Noto Serif CJK SC', 'Songti SC', STSong, serif;
+  --font-family-cjk: 'Source Han Serif SC', 'Noto Serif CJK SC',
+    'Songti SC', STSong, SimSun, serif;
+  --font-family-monospace: 'SFMono-Regular', Consolas, 'Liberation Mono',
+    monospace;
   --font-size-caption: 0.8125rem;
   --font-size-small: 0.875rem;
-  --font-size-body: 1rem;
+  --font-size-body: clamp(1rem, 0.975rem + 0.1vw, 1.0625rem);
   --font-size-lead: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
   --font-size-heading-small: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
   --font-size-heading: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
@@ -15,11 +21,12 @@
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-strong: 600;
-  --line-height-heading: 1.25;
-  --line-height-body: 1.7;
-  --line-height-caption: 1.5;
-  --letter-spacing-heading: -0.02em;
-  --letter-spacing-body: 0;
+  --line-height-heading: 1.2;
+  --line-height-body: 1.75;
+  --line-height-caption: 1.55;
+  --letter-spacing-heading: -0.018em;
+  --letter-spacing-body: 0.006em;
+  --letter-spacing-cjk: 0.025em;
   --letter-spacing-label: 0.08em;
 
   /* Spacing scale, with fluid values reserved for larger layout rhythms. */
@@ -82,6 +89,9 @@
   --color-primary: #173F32;
   --color-primary-hover: #0F3026;
   --color-primary-soft: #E8EEEA;
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-primary-hover);
+  --color-link-decoration: #8A9991;
   --color-border: #DCE2DE;
   --color-overlay: rgba(5, 12, 9, 0.96);
 
@@ -101,6 +111,9 @@
   --color-primary-hover: #C2D4CB;
   /* No separate dark soft color was specified; reuse the dark surface. */
   --color-primary-soft: var(--color-surface);
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-primary-hover);
+  --color-link-decoration: #60766B;
   --color-border: #21332B;
   --color-overlay: rgba(2, 7, 5, 0.97);
 }

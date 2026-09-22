@@ -12,6 +12,11 @@ html {
   color: var(--color-text);
   font-family: var(--font-family-body);
   font-size: 100%;
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  font-synthesis: weight small-caps;
+  font-variant-ligatures: common-ligatures contextual;
+  text-rendering: optimizeLegibility;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
@@ -47,7 +52,33 @@ h2 { font-size: var(--font-size-heading); }
 h3 { font-size: var(--font-size-heading-small); }
 h4 { font-size: var(--font-size-lead); }
 h5,
-h6 { font-size: var(--font-size-body); }
+h6 {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-strong);
+}
+
+/* Chinese uses upright Song-style faces instead of synthetic obliques. */
+:lang(zh-Hans),
+:lang(zh-CN),
+:lang(zh-SG) {
+  font-family: var(--font-family-cjk);
+  font-style: normal;
+  letter-spacing: var(--letter-spacing-cjk);
+  line-height: 1.8;
+}
+
+em,
+i,
+cite,
+dfn {
+  font-style: italic;
+}
+
+:is(em, i, cite, dfn):is(:lang(zh-Hans), :lang(zh-CN), :lang(zh-SG)) {
+  font-style: normal;
+  text-emphasis: filled sesame;
+  text-emphasis-position: under right;
+}
 
 p,
 ul,
@@ -113,18 +144,47 @@ b {
   font-weight: var(--font-weight-strong);
 }
 
+abbr[title] {
+  text-decoration-thickness: 0.0625em;
+  text-underline-offset: 0.18em;
+}
+
+time,
+table,
+pre,
+code,
+kbd,
+samp {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-family-monospace);
+}
+
 a {
-  color: inherit;
+  color: var(--color-link);
   text-decoration-line: underline;
-  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-link-decoration);
+  text-decoration-thickness: 0.0625em;
   text-underline-offset: 0.2em;
   text-decoration-skip-ink: auto;
-  transition: color var(--duration-fast) var(--ease-color);
+  text-underline-position: under;
+  transition:
+    color var(--duration-fast) var(--ease-color),
+    text-decoration-color var(--duration-fast) var(--ease-color),
+    text-decoration-thickness var(--duration-fast) var(--ease-color),
+    text-underline-offset var(--duration-fast) var(--ease-color);
 }
 
 a:focus-visible {
-  color: var(--color-primary-hover);
-  text-decoration-thickness: 2px;
+  color: var(--color-link-hover);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 0.125em;
+  text-underline-offset: 0.26em;
 }
 
 /* Quiet navigation, with a non-color cue for the current location. */
@@ -166,10 +226,21 @@ textarea {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  a:hover { color: var(--color-primary-hover); text-decoration-thickness: 2px; }
+  a:hover {
+    color: var(--color-link-hover);
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 0.125em;
+    text-underline-offset: 0.26em;
+  }
   nav a:hover { color: var(--color-primary); text-decoration-line: underline; }
   button:enabled:hover { color: var(--color-primary-hover); }
   :is(input, select, textarea):enabled:hover { border-color: var(--color-text-muted); }
+}
+
+a:active {
+  color: var(--color-link-hover);
+  text-decoration-color: currentColor;
+  transition-duration: 0ms;
 }
 
 button:enabled:active {
@@ -188,6 +259,13 @@ button:enabled:active {
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 4px;
+}
+
+@media (prefers-contrast: more) {
+  a {
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 0.125em;
+  }
 }
 
 ::selection {

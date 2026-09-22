@@ -5,6 +5,12 @@ set `data-theme="dark"` on the root HTML element for the nighttime palette.
 Typography, spacing, widths, and motion values live alongside colors in
 `tokens.css`. `global.css` imports them through the shared Astro layout.
 
+## Typography
+
+The site uses local-first book faces: a readable old-style serif stack for body copy, a more expressive editorial serif stack for display text, and a dedicated Song-style CJK stack. Latin italics use real italic faces rather than synthetic obliques. Simplified Chinese remains upright and uses sesame emphasis marks for semantic emphasis. Regular, medium, and strong weights are limited to 400, 500, and 600 so hierarchy remains quiet and print-like.
+
+Kerning, optical sizing, and common ligatures are enabled globally. Dates, tables, and code use lining tabular numerals. Code retains a separate local monospace stack.
+
 ## Color roles
 
 - `--color-bg`: dominant page canvas. Most content sits directly on it.
@@ -15,6 +21,8 @@ Typography, spacing, widths, and motion values live alongside colors in
 - `--color-primary` and `--color-primary-hover`: small interactive details.
 - `--color-primary-soft`: sparse selected/hover backgrounds. Dark mode reuses
   its surface token rather than inheriting the light green fill.
+- `--color-link`, `--color-link-hover`, and `--color-link-decoration`: semantic
+  inline-link ink and underline colors for each theme.
 - `--color-border`: decorative separators; not the sole indicator of a control.
 - `--color-overlay`: the supplied theme-specific overlay palette.
 - `--color-lightbox-overlay`: the brief's explicit lightbox background,
@@ -34,8 +42,10 @@ the surface and 4.09:1 on primary-soft. Use `--color-text` or
 captions there. Primary text and interactive text exceed 4.5:1 on all three
 light backgrounds. Dark muted text exceeds 6.9:1 on both dark backgrounds.
 
-Inline links stay underlined. Navigation uses an underline on hover, keyboard
-focus, and `aria-current`. Filter buttons can opt into `.filter` and indicate
+Inline links use a quiet underline that strengthens on hover and keyboard
+focus; high-contrast preferences always receive a solid ink underline.
+Navigation uses an underline on hover, keyboard focus, and `aria-current`.
+Filter buttons can opt into `.filter` and indicate
 selection using `aria-pressed="true"`, underlining, and weight as well as color.
 Keyboard focus uses a visible outline. Motion honors reduced-motion settings.
 
