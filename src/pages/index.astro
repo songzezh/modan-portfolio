@@ -12,7 +12,9 @@ const leadImage = lead && getCoverImage(lead);
     <div>
       <h1><span class="identity-roman">MÒ DÀN</span> <span class="identity-companion"><span class="identity-divider">/</span> <span class="identity-chinese" lang="zh-Hans">漠澹</span></span></h1>
     </div>
-    <p class="identity-note">A place for looking.<br />For what stays, quietly.</p>
+    <blockquote class="identity-note">
+      <p>There are no rules for good photographs, there are only good photographs. (Ansel Adams)</p>
+    </blockquote>
   </header>
 
   {lead && leadImage && <figure class="opening-photograph">
@@ -118,8 +120,23 @@ const leadImage = lead && getCoverImage(lead);
 
   .identity-note {
     margin: 0;
+    max-inline-size: 34ch;
     color: var(--color-text-muted);
     font-size: var(--font-size-small);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .identity-note p {
+    margin: 0;
+  }
+
+  .identity-note p:first-child {
+    margin-block-end: var(--space-3);
+    color: var(--color-text);
+    font-family: var(--font-family-editorial);
+    font-size: var(--font-size-body);
+    font-style: italic;
   }
 
   img {
