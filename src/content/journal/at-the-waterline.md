@@ -5,18 +5,9 @@ description: A small study of distance, still water, and the space around a phot
 location: null
 tags: [Observation, Water]
 placeholder: true
-coverImage:
-  id: shoreline
-  src: /assets/placeholders/coast-1200.webp
-  width: 1200
-  height: 800
-  orientation: landscape
-  alt: Driftwood and dark rocks beside blue water, with mist over distant islands.
-  caption: Shoreline study — placeholder photograph.
-  sources:
-    - { src: /assets/placeholders/coast-450.webp, width: 450 }
-    - { src: /assets/placeholders/coast-900.webp, width: 900 }
-    - { src: /assets/placeholders/coast-1200.webp, width: 1200 }
+work:
+  project: at-the-edge
+  image: shoreline
 ---
 A shoreline offers two ways of looking: down at the small things gathered at our feet, or out toward a distance we cannot quite measure.
 

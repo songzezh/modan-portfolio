@@ -11,11 +11,14 @@
   "homepage": "lead",
   "images": [{
     "id": "mountains",
+    "title": "Mountains in passing",
     "src": "/assets/placeholders/landscape-1800.webp",
     "width": 1800,
     "height": 1200,
     "orientation": "landscape",
     "alt": "Snow-covered mountain peaks beneath blue sky and drifting clouds.",
+    "location": null,
+    "year": null,
     "sources": [
       { "src": "/assets/placeholders/landscape-600.webp", "width": 600 },
       { "src": "/assets/placeholders/landscape-1200.webp", "width": 1200 },

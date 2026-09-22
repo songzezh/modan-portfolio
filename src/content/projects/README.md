@@ -34,10 +34,11 @@ All entries render into HTML; filtering is optional client-side enhancement.
 
 ## Image fields
 
-Each image has `id`, `src`, `orientation`, `width`, `height`, and nonempty `alt`.
+Each image has `id`, `title`, `src`, `orientation`, `width`, `height`, and nonempty `alt`.
 An image's `id` must be unique within its project. `orientation` is `landscape`,
 `portrait`, or `square` and must agree with its positive integer pixel dimensions.
-`caption` is an optional nonempty string. Omit it when there is no caption.
+`location` and `year` are independently maintained photograph metadata and may
+be null. `caption` is an optional nonempty string. Omit it when there is no caption.
 
 `src` is a root-relative public path such as `/assets/projects/my-project/01.webp`
 or an HTTPS URL. Public paths omit the `public/` prefix. `sources` optionally
@@ -47,8 +48,10 @@ served directly, so provide optimized files and verify their actual dimensions;
 schema validation checks metadata, not the bytes of remote or public images.
 
 The cover is a reference, not a second image object: editing its alt text or
-dimensions in the image list updates every use. See the existing placeholder
-entries for complete, working examples, including responsive sources.
+dimensions in the image list updates every use. Journal entries may also point
+to a project image by project slug and image ID. Image metadata remains owned
+here; Work never reads Journal metadata. See the existing placeholder entries
+for complete, working examples, including responsive sources.
 
 ## Reuse
 
@@ -65,5 +68,12 @@ and years are omitted. Portraits are narrow, squares medium, and landscapes wide
 desktop alignment alternates, with every third landscape full width. Mobile
 images use the available width. Add images and optional captions in JSON to
 extend a photobook without editing its page template.
+
+Clicking a series cover on `/work` opens `/work/[slug]`, which displays every
+photograph in the series. Clicking one of those photographs opens its independent
+detail route at `/work/[slug]/[image]`. The photograph page links back to its
+series, lists every photograph in that series, and lists Journal entries whose
+optional `work` reference points to that exact image. These relationships are
+derived at build time; they do not add Journal metadata to project JSON.
 
 Implementation follows [Astro content collections](https://docs.astro.build/en/guides/content-collections/).

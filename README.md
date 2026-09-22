@@ -73,7 +73,7 @@ modan-portfolio/
 │   │   └── GearFilterFields.astro  Shared equipment filter controls
 │   ├── content/
 │   │   ├── projects/          Photography series as JSON, plus authoring notes
-│   │   ├── journal/           Journal entries as Markdown with frontmatter
+│   │   ├── journal/           Journal entries with optional one-way Work references
 │   │   ├── gear/              Equipment JSON collection and authoring notes
 │   │   └── gear-kits/         Equipment kit JSON collection and authoring notes
 │   ├── layouts/
@@ -98,6 +98,7 @@ modan-portfolio/
 │   │   ├── about.astro        About page
 │   │   ├── work.astro         Photography project index
 │   │   ├── work/[slug].astro  Individual photography series
+│   │   ├── work/[slug]/[image].astro  Individual photograph detail
 │   │   ├── journal.astro      Journal index
 │   │   ├── journal/[slug].astro    Individual journal entries
 │   │   └── wiki/
@@ -137,7 +138,9 @@ modan-portfolio/
 
 Astro uses file-based routing: `src/pages/work.astro` serves `/work`, while
 `src/pages/work/[slug].astro` generates individual project pages from content.
-Journal and equipment detail pages follow the same pattern. The canonical
+`src/pages/work/[slug]/[image].astro` generates one independently addressable
+detail page for every photograph in a series. Journal and equipment detail
+pages follow the same pattern. The canonical
 camera gear routes live under `/wiki/camera-gear`; legacy `/gear` routes are
 redirected through `astro.config.mjs`.
 
@@ -145,6 +148,12 @@ redirected through `astro.config.mjs`.
 `gear`, and `gearKits`. Their schemas live in `src/lib/*-schema.ts`;
 collection queries and shared data logic also live in `src/lib/`. Equipment
 and kit collections currently contain authoring notes but no JSON entries.
+
+Photography metadata has a single owner: each Work project JSON file. A Journal
+entry may optionally reference a project image by project slug and image ID;
+the build resolves and validates that reference without copying image metadata
+into Journal frontmatter. This dependency is one-way—Work pages never depend on
+Journal entries.
 
 To add content, follow the local guides for [photography projects](src/content/projects/README.md),
 [journal entries](src/content/journal/README.txt), [equipment](src/content/gear/README.md),

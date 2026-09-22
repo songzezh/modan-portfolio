@@ -12,11 +12,15 @@
   "order": 2,
   "images": [{
     "id": "shoreline",
+    "title": "At the waterline",
     "src": "/assets/placeholders/coast-1200.webp",
     "width": 1200,
     "height": 800,
     "orientation": "landscape",
     "alt": "Driftwood on a rocky shore beside blue water and mist-covered islands.",
+    "caption": "Shoreline study — placeholder photograph.",
+    "location": null,
+    "year": null,
     "sources": [
       { "src": "/assets/placeholders/coast-450.webp", "width": 450 },
       { "src": "/assets/placeholders/coast-900.webp", "width": 900 },

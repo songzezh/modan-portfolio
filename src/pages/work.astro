@@ -43,7 +43,8 @@ const categoryCounts = Object.fromEntries(projectCategories.map((category) => [
               {project.data.year && <time datetime={String(project.data.year)}>{project.data.year}</time>}
             </p>}
           </div>
-          <a class:list={['series-image', `series-image--${image.orientation}`]} href={href} aria-labelledby={`series-${project.id}`}>
+          <a class:list={['series-image', `series-image--${image.orientation}`]}
+            href={href} aria-labelledby={`series-${project.id}`}>
             <img src={image.src} srcset={getImageSrcSet(image)}
               sizes="(min-width: 1600px) 840px, (min-width: 640px) 55vw, 92vw"
               width={image.width} height={image.height} alt={image.alt}

@@ -11,12 +11,15 @@ const dimension = z.number().int().positive();
 
 export const projectImageSchema = z.object({
   id: slug,
+  title: text,
   src: imageSource,
   width: dimension,
   height: dimension,
   orientation: z.enum(['landscape', 'portrait', 'square']),
   alt: text,
   caption: text.optional(),
+  location: text.nullable().default(null),
+  year: z.number().int().min(1800).max(9999).nullable().default(null),
   sources: z.array(z.object({ src: imageSource, width: dimension })).default([]),
 }).superRefine((image, context) => {
   const expected = image.width === image.height ? 'square'

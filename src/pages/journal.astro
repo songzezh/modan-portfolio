@@ -11,21 +11,23 @@ const entries = await getJournalEntries();
     <p>Notes on photography and observation.</p>
   </header>
   <ol class="journal-index" aria-label="Journal entries, newest first">
-    {entries.map((entry, index) => {
-      const { coverImage, title, description, date, location, tags, placeholder } = entry.data;
+    {entries.map(({ entry, work }, index) => {
+      const { title, description, date, location, tags, placeholder } = entry.data;
+      const image = work?.image;
       const href = `/journal/${entry.id}`;
       return <li>
-        <article class="journal-entry" aria-labelledby={`entry-${entry.id}`}>
-          <a class:list={['entry-image', `entry-image--${coverImage.orientation}`]} href={href} aria-labelledby={`entry-${entry.id}`}>
-            <img src={coverImage.src} srcset={getImageSrcSet(coverImage)}
+        <article class:list={['journal-entry', { 'journal-entry--text': !image }]} aria-labelledby={`entry-${entry.id}`}>
+          {image && <a class:list={['entry-image', `entry-image--${image.orientation}`]} href={href} aria-labelledby={`entry-${entry.id}`}>
+            <img src={image.src} srcset={getImageSrcSet(image)}
               sizes="(min-width: 1600px) 864px, (min-width: 640px) 55vw, 92vw"
-              width={coverImage.width} height={coverImage.height} alt={coverImage.alt}
+              width={image.width} height={image.height} alt={image.alt}
               loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
-          </a>
+          </a>}
           <div class="entry-note">
             <p class="metadata"><time datetime={date}>{formatJournalDate(date)}</time>{location && <> / {location}</>}</p>
             <h2 id={`entry-${entry.id}`}><a href={href}>{title}</a></h2>
             <p class="description">{description}</p>
+            {work && <p class="work-reference">Photograph from <a href={`/work/${work.project.data.slug}/${work.image.id}`}>{work.image.title}</a></p>}
             {tags.length > 0 && <ul class="tags" aria-label="Tags">{tags.map(tag => <li>{tag}</li>)}</ul>}
             {placeholder && <p class="metadata">Sample entry</p>}
           </div>
@@ -44,7 +46,8 @@ const entries = await getJournalEntries();
   .entry-image img { inline-size: 100%; }
   .entry-image--portrait { inline-size: 80%; }
   .entry-note { max-inline-size: 36ch; }
-  .metadata, .tags { color: var(--color-text-muted); font-size: var(--font-size-caption); }
+  .metadata, .tags, .work-reference { color: var(--color-text-muted); font-size: var(--font-size-caption); }
+  .work-reference a { color: inherit; text-underline-offset: 0.2em; }
   h2 { font-size: var(--font-size-heading); }
   h2 a { text-decoration: none; }
   h2 a:hover, h2 a:focus-visible { text-decoration: underline; }
@@ -53,8 +56,9 @@ const entries = await getJournalEntries();
   .empty-state { margin-block-start: var(--space-8); }
   @media (min-width: 40rem) {
     .journal-entry { grid-template-columns: 3fr 2fr; gap: var(--image-gap); }
-    .journal-index > li:nth-child(even) .journal-entry { grid-template-columns: 2fr 3fr; }
-    .journal-index > li:nth-child(even) .entry-image { grid-column: 2; grid-row: 1; justify-self: end; }
-    .journal-index > li:nth-child(even) .entry-note { grid-column: 1; grid-row: 1; }
+    .journal-entry--text { grid-template-columns: 1fr; }
+    .journal-index > li:nth-child(even) .journal-entry:not(.journal-entry--text) { grid-template-columns: 2fr 3fr; }
+    .journal-index > li:nth-child(even) .journal-entry:not(.journal-entry--text) .entry-image { grid-column: 2; grid-row: 1; justify-self: end; }
+    .journal-index > li:nth-child(even) .journal-entry:not(.journal-entry--text) .entry-note { grid-column: 1; grid-row: 1; }
   }
 </style>

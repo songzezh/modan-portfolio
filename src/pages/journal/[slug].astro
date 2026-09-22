@@ -7,16 +7,18 @@ import { getImageSrcSet } from '../../lib/projects';
 
 export const getStaticPaths = (async () => {
   const entries = await getJournalEntries();
-  return entries.map((entry, index) => ({
-    params: { slug: entry.id },
-    props: { entry, older: entries[index + 1], newer: entries[index - 1] },
+  return entries.map((journal, index) => ({
+    params: { slug: journal.entry.id },
+    props: { journal, older: entries[index + 1], newer: entries[index - 1] },
   }));
 }) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-const { entry, older, newer } = Astro.props;
+const { journal, older, newer } = Astro.props;
+const { entry, work } = journal;
 const { Content } = await render(entry);
-const { title, date, description, coverImage, location, tags, placeholder } = entry.data;
+const { title, date, description, location, tags, placeholder } = entry.data;
+const image = work?.image;
 ---
 
 <BaseLayout title={`${title} — Journal — MODAN / 漠澹`} description={description}>
@@ -27,30 +29,33 @@ const { title, date, description, coverImage, location, tags, placeholder } = en
       <p class="standfirst">{description}</p>
       {placeholder && <p class="metadata">Sample entry · Placeholder photography</p>}
     </header>
-    <figure class:list={['entry-cover', `entry-cover--${coverImage.orientation}`]}>
-      <img src={coverImage.src} srcset={getImageSrcSet(coverImage)}
-        sizes={coverImage.orientation === 'portrait' ? '(min-width: 768px) 768px, 92vw' : '(min-width: 1600px) 1320px, 92vw'}
-        width={coverImage.width} height={coverImage.height} alt={coverImage.alt} fetchpriority="high" />
-      {coverImage.caption && <figcaption>{coverImage.caption}</figcaption>}
-    </figure>
+    {image && <figure class:list={['entry-cover', `entry-cover--${image.orientation}`]}>
+      <img src={image.src} srcset={getImageSrcSet(image)}
+        sizes={image.orientation === 'portrait' ? '(min-width: 768px) 768px, 92vw' : '(min-width: 1600px) 1320px, 92vw'}
+        width={image.width} height={image.height} alt={image.alt} fetchpriority="high" />
+      {image.caption && <figcaption>{image.caption}</figcaption>}
+    </figure>}
     <div class="reading-layout">
       <aside class="entry-margin" aria-label="Entry details">
         <p class="metadata">Visual journal</p>
+        {work && <p class="work-reference">Referenced photograph<br /><a href={`/work/${work.project.data.slug}/${work.image.id}`}>{work.image.title}</a><br /><span>From {work.project.data.title}</span></p>}
         {tags.length > 0 && <ul class="tags" aria-label="Tags">{tags.map(tag => <li>{tag}</li>)}</ul>}
       </aside>
       <div class="journal-body"><Content /></div>
     </div>
   </article>
   <nav class="entry-navigation" aria-label="Journal navigation">
-    {newer && <a href={`/journal/${newer.id}`}><span>Newer entry</span>{newer.data.title}</a>}
+    {newer && <a href={`/journal/${newer.entry.id}`}><span>Newer entry</span>{newer.entry.data.title}</a>}
     <a class="journal-link" href="/journal">All journal entries</a>
-    {older && <a href={`/journal/${older.id}`}><span>Older entry</span>{older.data.title}</a>}
+    {older && <a href={`/journal/${older.entry.id}`}><span>Older entry</span>{older.entry.data.title}</a>}
   </nav>
 </BaseLayout>
 
 <style>
   .entry-header { max-inline-size: var(--content-width-text); margin-block-end: var(--space-8); }
-  .metadata, .tags { color: var(--color-text-muted); font-size: var(--font-size-caption); }
+  .metadata, .tags, .work-reference { color: var(--color-text-muted); font-size: var(--font-size-caption); }
+  .work-reference { margin-block: var(--space-5); }
+  .work-reference a { color: var(--color-text); text-underline-offset: 0.2em; }
   h1 { margin-block-end: var(--space-6); }
   .standfirst { font-family: var(--font-family-editorial); font-size: var(--font-size-lead); }
   .entry-cover { margin-block-end: var(--section-spacing); }

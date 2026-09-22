@@ -1,0 +1,132 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Lightbox from '../../../components/Lightbox.astro';
+import { getProjects, getImageSrcSet } from '../../../lib/projects';
+import { getJournalEntries, formatJournalDate } from '../../../lib/journal';
+
+export const getStaticPaths = (async () => {
+  const projects = await getProjects();
+  const journalEntries = await getJournalEntries();
+
+  return projects.flatMap((project) => project.data.images.map((image, index) => ({
+    params: { slug: project.data.slug, image: image.id },
+    props: {
+      project,
+      image,
+      imageIndex: index,
+      previous: project.data.images[index - 1],
+      next: project.data.images[index + 1],
+      journalReferences: journalEntries.filter(({ work }) => work?.project.id === project.id && work.image.id === image.id),
+    },
+  })));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { project, image, imageIndex, previous, next, journalReferences } = Astro.props;
+const seriesHref = `/work/${project.data.slug}`;
+---
+
+<BaseLayout title={`${image.title} — ${project.data.title} — MODAN / 漠澹`} description={image.caption ?? image.alt}>
+  <article aria-labelledby="photograph-title">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/work">Work</a><span aria-hidden="true">/</span><a href={seriesHref}>{project.data.title}</a>
+    </nav>
+
+    <header class="photograph-header">
+      <div>
+        <p class="eyebrow">Photograph {String(imageIndex + 1).padStart(2, '0')} / {String(project.data.images.length).padStart(2, '0')}</p>
+        <h1 id="photograph-title">{image.title}</h1>
+      </div>
+      <dl class="photograph-metadata">
+        <div><dt>Series</dt><dd><a href={seriesHref}>{project.data.title}</a></dd></div>
+        {image.location && <div><dt>Location</dt><dd>{image.location}</dd></div>}
+        {image.year && <div><dt>Year</dt><dd><time datetime={String(image.year)}>{image.year}</time></dd></div>}
+        <div><dt>Format</dt><dd>{image.orientation} · {image.width} × {image.height}</dd></div>
+      </dl>
+    </header>
+
+    <figure class:list={['photograph', `photograph--${image.orientation}`]}>
+      <a href={image.src} data-lightbox="photograph-lightbox" data-caption={image.caption ?? image.title} aria-label={`View ${image.title} at full size`}>
+        <img src={image.src} srcset={getImageSrcSet(image)}
+          sizes={image.orientation === 'portrait' ? '(min-width: 1600px) 780px, (min-width: 640px) 56vw, 92vw' : '(min-width: 1600px) 1440px, 92vw'}
+          width={image.width} height={image.height} alt={image.alt} fetchpriority="high" />
+      </a>
+      {image.caption && <figcaption>{image.caption}</figcaption>}
+    </figure>
+  </article>
+
+  <section class="connections" aria-labelledby="connections-title">
+    <header><p>Connections</p><h2 id="connections-title">About this photograph</h2></header>
+    <div class="connections-grid">
+      <div>
+        <h3>In this series</h3>
+        <ul class="connection-list">
+          {project.data.images.map((seriesImage, index) => <li>
+            {seriesImage.id === image.id
+              ? <span class="current"><span>{seriesImage.title}</span><small>Current photograph</small></span>
+              : <a href={`/work/${project.data.slug}/${seriesImage.id}`}><span>{seriesImage.title}</span><small>Photograph {String(index + 1).padStart(2, '0')}</small></a>}
+          </li>)}
+        </ul>
+        <a class="series-link" href={seriesHref}>View the complete series ↗</a>
+      </div>
+      {journalReferences.length > 0 && <div>
+        <h3>Referenced in the journal</h3>
+        <ul class="connection-list">
+          {journalReferences.map(({ entry }) => <li><a href={`/journal/${entry.id}`}>
+            <span>{entry.data.title}</span>
+            <small><time datetime={entry.data.date}>{formatJournalDate(entry.data.date)}</time></small>
+          </a></li>)}
+        </ul>
+      </div>}
+    </div>
+  </section>
+
+  <nav class="photograph-navigation" aria-label="Photograph navigation">
+    {previous && <a href={`/work/${project.data.slug}/${previous.id}`} rel="prev"><small>Previous photograph</small><span>{previous.title}</span></a>}
+    <a class="all-series" href={seriesHref}>All in this series</a>
+    {next && <a class="next" href={`/work/${project.data.slug}/${next.id}`} rel="next"><small>Next photograph</small><span>{next.title}</span></a>}
+  </nav>
+  <Lightbox id="photograph-lightbox" label={`${image.title} — photograph`} />
+</BaseLayout>
+
+<style>
+  .breadcrumb { display: flex; gap: var(--space-3); margin-block-end: var(--space-8); color: var(--color-text-muted); font-size: var(--font-size-caption); }
+  .breadcrumb a { color: inherit; }
+  .photograph-header { display: grid; gap: var(--space-7); margin-block-end: var(--space-8); }
+  .eyebrow, .connections header p, .connections h3, dt, .connection-list small, .photograph-navigation small { color: var(--color-text-muted); font-size: var(--font-size-caption); }
+  h1 { max-inline-size: 18ch; }
+  .photograph-metadata { display: flex; flex-wrap: wrap; gap: var(--space-5) var(--space-7); margin: 0; align-content: end; }
+  dt { margin-block-end: var(--space-1); }
+  dd { margin: 0; }
+  dd a { color: var(--color-text); }
+  .photograph { inline-size: 100%; }
+  .photograph--portrait { max-inline-size: var(--content-width-narrow); }
+  .photograph img { inline-size: 100%; }
+  .photograph > a { display: block; cursor: zoom-in; }
+  .connections { display: grid; gap: var(--space-7); margin-block-start: var(--section-spacing); padding-block: var(--space-8); border-block: 1px solid var(--color-border); }
+  .connections header p { margin-block-end: var(--space-3); }
+  .connections h2 { margin: 0; font-size: var(--font-size-heading); }
+  .connections-grid { display: grid; gap: var(--space-8); }
+  .connections h3 { margin-block-end: var(--space-4); font-family: var(--font-family-body); font-weight: var(--font-weight-regular); letter-spacing: var(--letter-spacing-label); text-transform: uppercase; }
+  .connection-list { margin: 0; padding: 0; list-style: none; border-block-start: 1px solid var(--color-border); }
+  .connection-list li { border-block-end: 1px solid var(--color-border); }
+  .connection-list a, .connection-list .current { display: grid; gap: var(--space-2); padding-block: var(--space-5); text-decoration: none; }
+  .connection-list a { color: var(--color-text); }
+  .connection-list a::after { content: '↗'; grid-column: 2; grid-row: 1 / span 2; align-self: center; color: var(--color-text-muted); }
+  .connection-list a:hover > span, .connection-list a:focus-visible > span { text-decoration: underline; text-underline-offset: 0.2em; }
+  .connection-list .current { color: var(--color-text-muted); }
+  .series-link { display: inline-block; margin-block-start: var(--space-4); padding-block: var(--space-3); font-size: var(--font-size-small); }
+  .photograph-navigation { display: grid; gap: var(--space-6); margin-block-start: var(--section-spacing); padding-block-start: var(--space-7); }
+  .photograph-navigation a { display: flex; flex-direction: column; gap: var(--space-2); padding-block: var(--space-3); color: var(--color-text); }
+  .all-series { font-size: var(--font-size-small); text-decoration: underline; }
+  @media (min-width: 40rem) {
+    .photograph-header { grid-template-columns: 3fr 2fr; align-items: end; }
+    .photograph--landscape, .photograph--square { inline-size: 92%; margin-inline-start: auto; }
+    .connections { grid-template-columns: 1fr 3fr; }
+    .connections-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .photograph-navigation { grid-template-columns: 1fr auto 1fr; align-items: start; }
+    .all-series { grid-column: 2; }
+    .next { grid-column: 3; text-align: end; }
+  }
+</style>

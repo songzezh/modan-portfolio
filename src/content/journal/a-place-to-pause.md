@@ -5,18 +5,9 @@ description: Looking through trees toward an open horizon, without hurrying to n
 location: null
 tags: [Looking, Landscape]
 placeholder: true
-coverImage:
-  id: trees-and-water
-  src: /assets/placeholders/woodland-1000.webp
-  width: 1000
-  height: 1250
-  orientation: portrait
-  alt: Evergreen trees overlooking blue water and low mountains on the horizon.
-  caption: Trees and water — placeholder photograph.
-  sources:
-    - { src: /assets/placeholders/woodland-400.webp, width: 400 }
-    - { src: /assets/placeholders/woodland-720.webp, width: 720 }
-    - { src: /assets/placeholders/woodland-1000.webp, width: 1000 }
+work:
+  project: stillness
+  image: trees-and-water
 ---
 The trees fill the foreground with a kind of restlessness. Beyond them, the water becomes a single quiet plane.
 
