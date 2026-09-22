@@ -3,10 +3,10 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const links = [
-  { href: '/work', label: 'WORK' },
-  { href: '/journal', label: 'JOURNAL' },
-  { href: '/wiki', label: 'WIKI' },
-  { href: '/about', label: 'ABOUT' },
+  { href: '/work', label: 'Work' },
+  { href: '/journal', label: 'Journal' },
+  { href: '/wiki', label: 'Wiki' },
+  { href: '/about', label: 'About' },
 ];
 ---
 
@@ -52,6 +52,7 @@ const links = [
 
   a.brand[aria-current='page'] {
     font-style: italic;
+    font-weight: 700;
     text-decoration-line: none;
   }
 
@@ -91,57 +92,33 @@ const links = [
   }
 
   nav a {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-2);
     min-block-size: 2.75rem;
     padding-inline: var(--space-1);
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: var(--font-weight-medium);
+    font-family: var(--font-family-editorial);
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    font-style: italic;
+    font-weight: var(--font-weight-regular);
     line-height: var(--line-height-caption);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.01em;
     text-decoration: none;
     white-space: nowrap;
-    transition: color var(--duration-fast) var(--ease-color),
-      background-color var(--duration-fast) var(--ease-color);
-  }
-
-  nav a::before {
-    content: '';
-    position: absolute;
-    inset-block-end: 4px;
-    inset-inline-start: calc(50% - 2px);
-    inline-size: 4px;
-    flex: 0 0 4px;
-    block-size: 4px;
-    border-radius: 50%;
-    background: transparent;
-    transition: background-color var(--duration-fast) var(--ease-color);
+    transition: color var(--duration-fast) var(--ease-color);
   }
 
   nav a[aria-current] {
-    color: var(--color-primary);
-    background: var(--color-primary-soft);
-  }
-
-  nav a[aria-current]::before {
-    background: currentColor;
+    color: var(--color-text-muted);
+    font-weight: 700;
+    text-decoration: none;
   }
 
   nav a:focus-visible {
     color: var(--color-primary);
-    background: var(--color-primary-soft);
     outline-offset: 2px;
     text-decoration: none;
     transition: none;
-  }
-
-  nav a:active {
-    background: var(--color-primary-soft);
-    transition-duration: 0ms;
   }
 
   .header-tools {
@@ -154,10 +131,8 @@ const links = [
   @media (hover: hover) and (pointer: fine) {
     nav a:hover {
       color: var(--color-primary);
-      background: var(--color-surface);
       text-decoration: none;
     }
-    nav a[aria-current]:hover { background: var(--color-primary-soft); }
   }
 
   @media (min-width: 48rem) {
@@ -175,7 +150,6 @@ const links = [
 
     ul { grid-template-columns: repeat(4, auto); }
     nav a { padding-inline: clamp(0.75rem, 1.5vw, 1.5rem); }
-    nav a::before { position: static; }
 
     .header-tools {
       grid-column: 3;
